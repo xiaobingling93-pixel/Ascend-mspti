@@ -1,13 +1,13 @@
 # msPTI工具安装指南
-## 📝安装说明
+## 安装说明
 本文主要介绍msPTI工具的安装方式。
 
-## ⚠️安装前准备
+## 安装前准备
 - 硬件环境请参见《[昇腾产品形态说明](https://www.hiascend.com/document/detail/zh/AscendFAQ/ProduTech/productform/hardwaredesc_0001.html)》。
 
 - 软件环境请参见《[CANN 软件安装指南](https://www.hiascend.com/document/detail/zh/canncommercial/83RC1/softwareinst/instg/instg_quick.html?Mode=PmIns&InstallType=local&OS=openEuler&Software=cannToolKit)》安装配套版本的CANN Toolkit开发套件包和ops算子包并配置CANN环境变量。
 
-## ✅安装run包
+## 安装run包
 
 ### 源码编译
 执行如下命令编译run包：

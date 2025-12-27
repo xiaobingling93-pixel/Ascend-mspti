@@ -10,7 +10,7 @@ msPTI API的功能介绍和使用示例请参见[msPTI工具](../README.md)。
 
 库文件路径：$\{INSTALL\_DIR\}/lib64/libmspti.so。
 
-$\{INSTALL\_DIR\}请替换为CANN软件安装后文件存储路径。若安装的Ascend-cann-toolkit软件包，以root安装举例，则安装后文件存储路径为：/usr/local/Ascend/ascend-toolkit/latest。
+$\{INSTALL\_DIR\}请替换为CANN Toolkit开发套件包安装后文件存储路径。以root安装举例，则安装后文件存储路径为：/usr/local/Ascend/cann。
 
 ## 接口列表<a name="section2321145165316"></a>
 
@@ -73,7 +73,7 @@ Activity Buffer：用于缓存Activity Record数据，并将一个或多个Activ
 |[msptiEnableDomain](./context/msptiEnableDomain.md)|为特定**domain**的订阅者开启或关闭所有回调。|
 |**Typedef类型**|**Typedef说明**|
 |[msptiCallbackFunc](./context/msptiCallbackFunc.md)|回调函数类型。|
-|[msptiCallbackId](./context/msptiCallbackId.md)|注册Callback调用的ID。|
+|[msptiCallbackId](./context/msptiCallbackId.md)|标识runtime函数的ID。|
 |[msptiSubscriberHandle](./context/msptiSubscriberHandle.md)|订阅者的句柄。|
 |**Enumeration类型**|**Enumeration说明**|
 |[msptiCallbackDomain](./context/msptiCallbackDomain.md)|相关API函数或CANN驱动程序活动的回调点。|
