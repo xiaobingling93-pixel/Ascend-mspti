@@ -169,7 +169,7 @@ public:
     MstxApiInject() noexcept
     {
         Mspti::Common::RegisterFunction("libprofapi", "ProfRegisterMstxFunc");
-        Mspti::Common::RegisterFunction("libprofapi", "EnableMstxFunc");
+        Mspti::Common::RegisterFunction("libprofapi", "ProfEnableMstxFunc");
         MstxRegisterMstxFunc();
     }
     ~MstxApiInject() = default;
@@ -393,7 +393,7 @@ msptiResult MstxRegisterMstxFunc()
 void MsptiEnableMstxFunc()
 {
     MSPTI_LOGI("mspti enable mstxFuncs");
-    EnableMstxFunc(PROF_MODULE_MSPTI);
+    ProfEnableMstxFunc(PROF_MODULE_MSPTI);
 }
 
 int InitInjectionMstx(MstxGetModuleFuncTableFunc getFuncTable)
@@ -425,15 +425,15 @@ void ProfRegisterMstxFunc(MstxInitInjectionFunc mstxInitFunc, ProfModule module)
     return func(mstxInitFunc, module);
 }
 
-void EnableMstxFunc(ProfModule module)
+void ProfEnableMstxFunc(ProfModule module)
 {
-    using enableMstxFunc = std::function<decltype(EnableMstxFunc)>;
+    using enableMstxFunc = std::function<decltype(ProfEnableMstxFunc)>;
     static enableMstxFunc func = nullptr;
     if (func == nullptr) {
         Mspti::Common::GetFunction("libprofapi", __FUNCTION__, func);
     }
     if (func == nullptr) {
-        MSPTI_LOGE("EnableMstxFunc can not be founded in libprofapi.so");
+        MSPTI_LOGE("ProfEnableMstxFunc can not be founded in libprofapi.so");
         return;
     }
     MSPTI_LOGI("mspti enable mstxFuncs");
