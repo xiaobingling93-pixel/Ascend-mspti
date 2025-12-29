@@ -72,7 +72,7 @@ typedef int(*MstxInitInjectionFunc)(MstxGetModuleFuncTableFunc);
 
 // 注册mstx接口
 void ProfRegisterMstxFunc(MstxInitInjectionFunc mstxInitFunc, ProfModule module);
-void EnableMstxFunc(ProfModule module);
+void ProfEnableMstxFunc(ProfModule module);
 
 struct mstxDomainRegistration_st {};
 typedef struct mstxDomainRegistration_st MstxDomainHandle;

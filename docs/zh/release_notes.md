@@ -8,8 +8,8 @@ msPTI详细版本配套关系及对应软件包下载链接如下：
 
 | 架构 | 版本 | 发布日期 | 支持CANN版本 | 下载链接 | 校验码 |
 |:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
-| x86 | 8.3.0 | 2025.12.25 | 8.1.RC1及以上 | [Ascend-mindstudio-mspti_8.3.0_linux-x86_64.run](https://ptdbg.obs.cn-north-4.myhuaweicloud.com/profiler/mspti/8.3.0/Ascend-mindstudio-mspti_8.3.0_linux-x86_64.run) | 2f42d9104b3ae0a724ecc1040add76634acfdd1ac31619727b27a5dee9a24e07 |
-| aarch64 | 8.3.0 | 2025.12.25 | 8.1.RC1及以上 | [Ascend-mindstudio-mspti_8.3.0_linux-aarch64.run](https://ptdbg.obs.cn-north-4.myhuaweicloud.com/profiler/mspti/8.3.0/Ascend-mindstudio-mspti_8.3.0_linux-aarch64.run) | 6fd07abb6c5abb15fe072c2934056dce8c8794a8762576007a20e2e75249f58b |
+| x86 | 8.3.0 | 2025.12.25 | 8.1.RC1及以上 | [Ascend-mindstudio-mspti_8.3.0_linux-x86_64.run](https://ptdbg.obs.cn-north-4.myhuaweicloud.com/profiler/mspti/8.3.0/Ascend-mindstudio-mspti_8.3.0_linux-x86_64.run) | 88c74dd514ff344de69e2c93425b8f2376f4a545e4c901fca3b960875a0eb76d |
+| aarch64 | 8.3.0 | 2025.12.25 | 8.1.RC1及以上 | [Ascend-mindstudio-mspti_8.3.0_linux-aarch64.run](https://ptdbg.obs.cn-north-4.myhuaweicloud.com/profiler/mspti/8.3.0/Ascend-mindstudio-mspti_8.3.0_linux-aarch64.run) | 29e3e245ac8d1c2b4767fbb991f7b6ac3ebe3aa4c3a65a619047a25f4ee26659 |
 
 ## 特性变更说明
 

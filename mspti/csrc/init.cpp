@@ -28,19 +28,28 @@ namespace Mspti {
 namespace Adapter {
 PyObject *MsptiStart(PyObject *self, PyObject *args)
 {
-    auto ret = MsptiAdapter::GetInstance()->Start();
+    msptiResult ret = MSPTI_SUCCESS;
+    Py_BEGIN_ALLOW_THREADS
+    ret = MsptiAdapter::GetInstance()->Start();
+    Py_END_ALLOW_THREADS
     return Py_BuildValue("i", ret);
 }
 
 PyObject *MsptiStop(PyObject *self, PyObject *args)
 {
-    auto ret = MsptiAdapter::GetInstance()->Stop();
+    msptiResult ret = MSPTI_SUCCESS;
+    Py_BEGIN_ALLOW_THREADS
+    ret = MsptiAdapter::GetInstance()->Stop();
+    Py_END_ALLOW_THREADS
     return Py_BuildValue("i", ret);
 }
 
 PyObject *MsptiFlushAll(PyObject *self, PyObject *args)
 {
-    auto ret = MsptiAdapter::GetInstance()->FlushAll();
+    msptiResult ret = MSPTI_SUCCESS;
+    Py_BEGIN_ALLOW_THREADS
+    ret = MsptiAdapter::GetInstance()->FlushAll();
+    Py_END_ALLOW_THREADS
     return Py_BuildValue("i", ret);
 }
 
