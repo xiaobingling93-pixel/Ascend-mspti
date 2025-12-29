@@ -17,7 +17,7 @@ cd mspti
 bash scripts/build.sh [<version>]
 ```
 编译完成后，会在mspti/output目录下生成msPTI工具的run包，run包名称格式为`Ascend-mindstudio-mspti_<version>_linux-<arch>.run`。
-上述编译命令中的version参数即为软件包名称中的version，表示该run包的版本号，默认为“none”。
+上述编译命令中的version参数即为软件包名称中的version，表示该run包的版本号。
 run包中的arch表示系统架构，根据实际运行系统自动适配。
 
 ### 安装步骤

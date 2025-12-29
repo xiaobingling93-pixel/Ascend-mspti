@@ -39,23 +39,23 @@ msPTI工具不可与任何其他性能数据采集工具同时使用，否则会
 
 **构建样例执行<a name="zh-cn_topic_0000002257378834_section6122533557"></a>**
 
-1. 安装CANN软件后，使用CANN运行用户进行编译、运行时，需要以CANN运行用户登录环境，执行`source/${install_path}/set_env.sh`命令设置环境变量。其中`${install_path}`为CANN软件的安装目录，例如：/usr/local/Ascend/cann。
+1. 安装CANN软件后，需要以CANN运行用户登录环境，执行`source /${install_path}/set_env.sh`命令设置环境变量。其中`${install_path}`为CANN软件安装后文件存储路径，例如：/usr/local/Ascend/cann。
    示例如下：
 
    ```
-   source/usr/local/Ascend/cann/set_env.sh
+   source /usr/local/Ascend/cann/set_env.sh
    ```
 
 2. 进入样例目录。
 
-   msPTI样例代码集成在CANN Toolkit开发套件包中，路径为$\{INSTALL\_DIR\}/tools/mspti/samples。
+   msPTI样例代码集成在CANN Toolkit开发套件包中，路径为$\{install\_path\}/tools/mspti/samples。
 
-   $\{INSTALL\_DIR\}请替换为CANN软件安装后文件存储路径。以root安装举例，则安装后文件存储路径为：/usr/local/Ascend/cann。
+   $\{install\_path\}请替换为CANN软件安装后文件存储路径。以root安装举例，则安装后文件存储路径为：/usr/local/Ascend/cann。
 
    示例如下：
 
    ```
-   cd ${INSTALL_DIR}/tools/mspti/samples/callback_domain
+   cd ${install_path}/tools/mspti/samples/callback_domain
    ```
 
 3. 执行对应样例目录下的sample\_run.sh。

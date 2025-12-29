@@ -2,7 +2,7 @@
 
 ## 简介
 
-msPTI工具（MindStudio Profiling Tool Interface）是MindStudio针对Ascend设备提出的一套Profiling API，用户可以通过msPTI构建针对NPU应用程序的工具，用于分析应用程序的性能。
+msPTI工具（MindStudio Profiling Tools Interface）是MindStudio针对Ascend设备提出的一套Profiling API，用户可以通过msPTI构建针对NPU应用程序的工具，用于分析应用程序的性能。
 
 msPTI为通用场景接口，使用msPTI API开发的Profiling分析工具可以在各种框架的推理训练场景生效。
 
@@ -26,9 +26,6 @@ msPTI主要包括以下功能：
 └── README.md                 // 整体仓说明文档
 
 ```
-## 版本说明
-
-包含msPTI的软件版本配套关系和软件包下载以及每个版本的特性变更说明，详情请参见《[版本说明](docs/zh/release_notes.md)》。
 
 ## 环境部署
 
@@ -36,7 +33,7 @@ msPTI主要包括以下功能：
 
 - 硬件环境请参见《[昇腾产品形态说明](https://www.hiascend.com/document/detail/zh/AscendFAQ/ProduTech/productform/hardwaredesc_0001.html)》。
 
-- 软件环境请参见《[CANN 软件安装指南](https://www.hiascend.com/document/detail/zh/canncommercial/83RC1/softwareinst/instg/instg_quick.html?Mode=PmIns&InstallType=local&OS=openEuler&Software=cannToolKit)》安装配套版本的CANN Toolkit开发套件包和ops算子包并配置CANN环境变量。
+- 工具的使用运行需要提前获取并安装CANN开源版本，当前CANN开源版本正在发布中，敬请期待。
 
 ### 工具安装
 
@@ -82,15 +79,15 @@ msPTI工具docs目录下的文档适用CC-BY 4.0许可证，具体请参见[LICE
 2. **安全问题处理**：本项目中对安全问题处理的形式，请通过邮箱通知项目核心人员确认编辑。
 3. **解决现有问题**：通过查看仓库的Issues列表可以发现需要处理的问题信息，可以尝试解决其中的某个问题。
 4. **如何提出新功能**：请使用Issues的Feature标签进行标记，我们会定期处理和确认开发。
-5. **开始贡献：**
-    a. Fork本项目的仓库。
-    b. Clone到本地。
-    c. 创建开发分支。
-    d. 本地自测：提交前请通过所有的单元测试，包括新增的单元测试。
-    e. 提交代码。
-    f. 新建Pull Request。
-    g. 代码检视：您需要根据评审意见修改代码，并再次推送更新。此过程可能会有多轮。
-    h. 当您的PR获得足够数量的检视者批准后，Committer会进行最终审核。
+5. **开始贡献：**<br>
+    a. Fork本项目的仓库。<br>
+    b. Clone到本地。<br>
+    c. 创建开发分支。<br>
+    d. 本地自测：提交前请通过所有的单元测试，包括新增的单元测试。<br>
+    e. 提交代码。<br>
+    f. 新建Pull Request。<br>
+    g. 代码检视：您需要根据评审意见修改代码，并再次推送更新。此过程可能会有多轮。<br>
+    h. 当您的PR获得足够数量的检视者批准后，Committer会进行最终审核。<br>
     i. 审核和测试通过后，CI会将您的PR合并入到项目的主干分支。
 
 ## 建议与交流

@@ -42,7 +42,7 @@
 
 ## 功能说明<a name="section20806203412478"></a>
 
-标识runtime函数的ID。
+标识callback跟踪函数的ID。
 
 ## 函数原型<a name="section1121883194711"></a>
 
