@@ -16,7 +16,7 @@ git clone https://gitcode.com/Ascend/mspti.git
 cd mspti
 bash scripts/build.sh [<version>]
 ```
-编译完成后，会在mspti/output目录下生成msPTI工具的run包，run包名称格式为`ascend-mindstudio-mspti_<version>_<arch>.run`。
+编译完成后，会在mspti/output目录下生成msPTI工具的run包，run包名称格式为`Ascend-mindstudio-mspti_<version>_linux-<arch>.run`。
 上述编译命令中的version参数即为软件包名称中的version，表示该run包的版本号。
 run包中的arch表示系统架构，根据实际运行系统自动适配。
 
@@ -24,11 +24,11 @@ run包中的arch表示系统架构，根据实际运行系统自动适配。
 
 1. 增加对run包的可执行权限。
     ```shell
-    chmod +x ascend-mindstudio-mspti_<version>_<arch>.run
+    chmod +x Ascend-mindstudio-mspti_<version>_linux-<arch>.run
     ```
 2. 安装run包。
     ```shell
-    ./ascend-mindstudio-mspti_<version>_<arch>.run --install
+    ./Ascend-mindstudio-mspti_<version>_linux-<arch>.run --install
     ```
     安装命令支持`--install-path=<path>`等参数，具体使用方式请参见[参数说明](#参数说明)。
 
