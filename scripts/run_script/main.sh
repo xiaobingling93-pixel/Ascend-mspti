@@ -15,6 +15,7 @@
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
 # -------------------------------------------------------------------------
+set -e
 install_args_num=0
 install_path_num=0
 
@@ -28,10 +29,9 @@ function parse_script_args() {
         case "$3" in
         --install-path=*)
             let "install_path_num+=1"
-            install_path=${3#--install-path=}/ascend-toolkit/latest
+            install_path=${3#--install-path=}
             check_path ${install_path}
             install_path=$(readlink -f ${install_path})
-            check_path ${install_path}
             shift
             continue
             ;;
@@ -50,7 +50,7 @@ function parse_script_args() {
             continue
             ;;
         *)
-            print $LEVEL_ERROR "Input option '$3' is invalid. Please try --help."
+            print ${LEVEL_ERROR} "Input option '$3' is invalid. Please try --help."
             exit 1
             ;;
         esac
@@ -59,14 +59,15 @@ function parse_script_args() {
 
 function check_args() {
     if [ ${install_args_num} -eq 0 ]; then
-        print $LEVEL_ERROR "Input option is invalid. Please try --help."
+        print ${LEVEL_ERROR} "Input option is invalid. Please try --help."
         exit 1
     fi
 
     if [ ${install_path_num} -gt 1 ]; then
-        print $LEVEL_ERROR "Do not input --install-path many times. Please try --help."
+        print ${LEVEL_ERROR} "Do not input --install-path many times. Please try --help."
         exit 1
     fi
+    check_path ${install_path}
 }
 
 function execute_run() {
@@ -75,9 +76,9 @@ function execute_run() {
 
 function get_default_install_path() {
     if [ "$UID" = "0" ]; then
-        echo "/usr/local/Ascend/ascend-toolkit/latest"
+        echo "/usr/local/Ascend/cann"
     else
-        echo "${HOME}/Ascend/ascend-toolkit/latest"
+        echo "${HOME}/Ascend/cann"
     fi
 }
 
@@ -88,4 +89,4 @@ install_path=$(get_default_install_path)
 parse_script_args $*
 check_args
 execute_run
-print $LEVEL_INFO "${MSPTI_RUN_NAME} package install success."
+print ${LEVEL_INFO} "${MSPTI_RUN_NAME} package install success."

@@ -29,7 +29,10 @@ MSPTI_RUN_NAME="MindStudio-Profilier-Tools-Interface"
 # product constant
 LIBMSPTI="libmspti.so"
 SAMPLES="samples"
-LIBMSPTI_PATH="tools/mspti"
+MSPTI_PATH="tools/mspti"
+MSPTI_INCLUDE_PATH="${MSPTI_PATH}/include"
+MSPTI_LIB_PATH="${MSPTI_PATH}/lib64"
+MSPTI_PYTHON_PATH="${MSPTI_PATH}/python"
 MSPTI_WHL="mspti-0.0.1-py3-none-any.whl"
 MSPTI_HEADER=(
     mspti.h
@@ -41,7 +44,7 @@ MSPTI_HEADER=(
 
 # log level
 LEVEL_ERROR="ERROR"
-LEVEL_WARN="WARNING"
+LEVEL_WARNING="WARNING"
 LEVEL_INFO="INFO"
 
 function print() {
