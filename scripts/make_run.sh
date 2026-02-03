@@ -41,7 +41,7 @@ MAIN_SCRIPT=main.sh
 INSTALL_SCRIPT=install.sh
 UTILS_SCRIPT=utils.sh
 
-MSPTI_RUN_NAME="mindstudio-mspti"
+MSPTI_RUN_NAME="mindstudio-profiler-tools-interface"
 VERSION="none"
 
 PKG_LIMIT_SIZE=524288000 # 500M
@@ -114,12 +114,10 @@ function version() {
 }
 
 function get_package_name() {
-    local product="Ascend"
     local name=${MSPTI_RUN_NAME}
-
     local version=$(echo $(version) | cut -d '.' -f 1,2,3)
     local os_arch=$(arch)
-    echo "${product}-${name}_${version}_linux-${os_arch}.run"
+    echo "${name}_${version}_${os_arch}.run"
 }
 
 function create_run_package() {

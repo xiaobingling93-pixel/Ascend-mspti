@@ -15,7 +15,6 @@
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
 # -------------------------------------------------------------------------
-set -e
 install_args_num=0
 install_path_num=0
 

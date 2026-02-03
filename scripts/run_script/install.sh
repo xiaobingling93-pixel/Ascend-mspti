@@ -15,7 +15,6 @@
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
 # -------------------------------------------------------------------------
-set -e
 install_path=${1}
 package_arch=${2}
 install_for_all_flag=${3}
