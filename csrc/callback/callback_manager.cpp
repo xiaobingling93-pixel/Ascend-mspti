@@ -38,6 +38,16 @@ inline bool IsValidCBId(msptiCallbackId cbid)
 {
     return cbid < sizeof(CallbackManager::BitMap) * 8;
 }
+
+inline msptiResult HasLdPreload()
+{
+    static const std::string ld = Mspti::Common::Utils::GetEnv("LD_PRELOAD");
+    if (ld.find("libmspti.so") == std::string::npos) {
+        MSPTI_LOGE("Enable callbackDomain requires libmspti.so in LD_PRELOAD.");
+        return MSPTI_ERROR_WITHOUT_LD_PRELOAD;
+    }
+    return MSPTI_SUCCESS;
+}
 }
 
 std::unordered_map<msptiCallbackDomain, std::unordered_set<msptiCallbackId>> CallbackManager::domain_cbid_map_ = {
@@ -150,6 +160,9 @@ msptiResult CallbackManager::UnRegister(msptiCallbackDomain domain, msptiCallbac
 msptiResult CallbackManager::EnableCallback(uint32_t enable,
     msptiSubscriberHandle subscriber, msptiCallbackDomain domain, msptiCallbackId cbid)
 {
+    if (HasLdPreload() != MSPTI_SUCCESS) {
+        return MSPTI_ERROR_WITHOUT_LD_PRELOAD;
+    }
     if (!init_.load()) {
         MSPTI_LOGW("CallbackManager was not init.");
         return MSPTI_SUCCESS;
@@ -168,6 +181,9 @@ msptiResult CallbackManager::EnableCallback(uint32_t enable,
 msptiResult CallbackManager::EnableDomain(uint32_t enable,
     msptiSubscriberHandle subscriber, msptiCallbackDomain domain)
 {
+    if (HasLdPreload() != MSPTI_SUCCESS) {
+        return MSPTI_ERROR_WITHOUT_LD_PRELOAD;
+    }
     if (!init_.load()) {
         MSPTI_LOGW("CallbackManager was not init.");
         return MSPTI_SUCCESS;

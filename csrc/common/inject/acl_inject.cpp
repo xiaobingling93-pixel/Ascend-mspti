@@ -98,14 +98,7 @@ AclError aclrtSetDevice(int32_t deviceId)
     }
     THROW_FUNC_NOTFOUND(func, __FUNCTION__, SO_FILE_NAME);
     Mspti::Callback::CallbackScope scope(MSPTI_CB_DOMAIN_RUNTIME, MSPTI_CBID_RUNTIME_DEVICE_SET, __FUNCTION__);
-    auto ret = func(deviceId);
-    if (ret == MSPTI_SUCCESS) {
-        int32_t logicDeviceId = 0;
-        uint32_t realDeviceId = aclrtGetLogicDevIdByUserDevId(deviceId, &logicDeviceId) == MSPTI_SUCCESS ?
-            static_cast<uint32_t>(logicDeviceId) : static_cast<uint32_t>(deviceId);
-        Mspti::Activity::ActivityManager::GetInstance()->SetDevice(realDeviceId);
-    }
-    return ret;
+    return func(deviceId);
 }
 
 AclError aclrtResetDevice(int32_t deviceId)

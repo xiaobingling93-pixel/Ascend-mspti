@@ -49,6 +49,7 @@ protected:
     virtual void SetUp()
     {
         GlobalMockObject::verify();
+        setenv("LD_PRELOAD", "libmspti.so", 1);
     }
     virtual void TearDown() {}
 };
