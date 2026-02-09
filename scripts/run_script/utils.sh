@@ -25,7 +25,7 @@ user_mspti_right=550
 
 PATH_LENGTH=4096
 
-MSPTI_RUN_NAME="MindStudio-Profilier-Tools-Interface"
+MSPTI_RUN_NAME="MindStudio-Profiler-Tools-Interface"
 # product constant
 LIBMSPTI="libmspti.so"
 SAMPLES="samples"
@@ -65,17 +65,6 @@ function get_log_file() {
     echo "${log_dir}/ascend_install.log"
 }
 
-function log_init() {
-    if [ ! -f "$log_file" ]; then
-        touch $log_file
-        if [ $? -ne 0 ]; then
-            print $LEVEL_ERROR "touch $log_file permission denied"
-            exit 1
-        fi
-    fi
-    chmod 640 $log_file
-}
-
 function check_path() {
     local path_str=${1}
     # check the length of path
@@ -109,4 +98,3 @@ function check_path() {
 
 # init log file
 log_file=$(get_log_file)
-log_init

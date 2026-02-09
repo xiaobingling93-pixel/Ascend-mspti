@@ -37,8 +37,8 @@ function install_whl_package() {
 
     print ${LEVEL_INFO} "Start to install ${_package}."
     if [ ! -f "${_package}" ]; then
-        print ${LEVEL_ERROR} "Install whl The ${_package} does not exist."
-        exit 1
+        print ${LEVEL_ERROR} "The ${_package} does not exist."
+        return
     fi
     if [ "-${_pylocal}" = "-y" ]; then
         pip3 install --upgrade --no-deps --force-reinstall "${_package}" -t "${_pythonlocalpath}" > /dev/null 2>&1
@@ -51,12 +51,13 @@ function install_whl_package() {
     fi
     if [ $? -ne 0 ]; then
         print ${LEVEL_ERROR} "Install ${_package} failed."
-        exit 1
+        return
     fi
     print ${LEVEL_INFO} "Install ${_package} success."
 }
 
 function implement_install() {
+    create_directory ${install_path}/${MSPTI_PATH} ${right}
     create_directory ${install_path}/${MSPTI_INCLUDE_PATH} ${right}
     create_directory ${install_path}/${MSPTI_LIB_PATH} ${right}
     create_directory ${install_path}/${MSPTI_PYTHON_PATH} ${right}
@@ -68,14 +69,6 @@ function implement_install() {
     local mspti_whl=${install_path}/${MSPTI_PYTHON_PATH}/${MSPTI_WHL}
     copy_file ${MSPTI_WHL} ${mspti_whl} ${right}
     install_whl_package ${pylocal} ${mspti_whl} ${install_path}/python/site-packages
-    if [ -d ${install_path}/lib64 ]; then
-        cd ${install_path}/lib64
-        create_softlink ../../${MSPTI_LIB_PATH}/${LIBMSPTI} ${install_path}/lib64/${LIBMSPTI}
-    fi
-    if [ -d ${install_path}/include ]; then
-        cd ${install_path}/include
-        create_softlink ../../${MSPTI_INCLUDE_PATH} ${install_path}/include/mspti
-    fi
 }
 
 function copy_file() {
@@ -99,45 +92,28 @@ function copy_file() {
         cp -r ${filename} ${target_file}
         chmod -R ${_right} ${target_file}
     fi
-    print ${LEVEL_INFO} "${filename} is replaced."
+    print ${LEVEL_INFO} "${filename} copy success."
 }
 
 function create_directory() {
     local _dir=${1}
     local _right=${2}
     if [ ! -d "${_dir}" ]; then
+        local parent_dir=$(dirname ${_dir})
+        if [ ! -d "${parent_dir}" ]; then
+            print ${LEVEL_ERROR} "parent directory '${parent_dir}' does not exist"
+            exit 1
+        fi
+        local parent_right=$(stat -c '%a' ${parent_dir})
+        chmod u+w ${parent_dir}
         mkdir -p ${_dir}
         chmod ${_right} ${_dir}
-    fi
-}
-
-function create_softlink() {
-    local _src=$1
-    local _dst=$2
-    if [ -z "${_src}" ] || [ -z "${_dst}" ]; then
-        print ${LEVEL_ERROR} "parameter error"
-        exit 1
-    fi
-    if [ ! -e "${_src}" ]; then
-        print ${LEVEL_ERROR} "'${_src}' does not exist"
-        exit 1
-    fi
-    if [ -L "${_dst}" ];then
-        return
-    fi
-    if [ -e "${_dst}" ]; then
-        rm -rf ${_dst}
-    fi
-    ln -sf ${_src} ${_dst}
-    if [ ! -L "${_dst}" ]; then
-        print ${LEVEL_ERROR} "create softlink '${_dst}' for '${_src}' failed"
-        exit 1
+        chmod ${parent_right} ${parent_dir}
     fi
 }
 
 source utils.sh
 
 right=${user_right}
-arch_name="${package_arch}-linux"
 get_right
 implement_install
