@@ -19,6 +19,7 @@
 
 #include <functional>
 #include "csrc/activity/ascend/parser/kernel_parser.h"
+#include "csrc/activity/ascend/parser/cann_api_parser.h"
 #include "csrc/activity/ascend/parser/parser_manager.h"
 #include "csrc/activity/ascend/parser/cann_track_cache.h"
 #include "csrc/activity/ascend/parser/cann_hash_cache.h"
@@ -131,7 +132,20 @@ int32_t MsptiApiReporterCallbackImpl(uint32_t agingFlag, const MsprofApi * const
         return PROFAPI_ERROR;
     }
 
-    if (data->level == MSPROF_REPORT_NODE_BASE_LEVEL) {
+    switch (data->level) {
+    case MSPROF_REPORT_RUNTIME_LEVEL:
+        if (Mspti::Parser::CannApiParser::GetInstance().ReportRtApi(agingFlag, data) != MSPTI_SUCCESS) {
+            MSPTI_LOGE("Report Msprof Api data to ParserManager failed.");
+            return PROFAPI_ERROR;
+        }
+        break;
+
+    case MSPROF_REPORT_NODE_BASE_LEVEL: {
+        if (Mspti::Parser::CannApiParser::GetInstance().ReportRtApi(agingFlag, data) != MSPTI_SUCCESS) {
+            MSPTI_LOGE("Report Msprof Api data to ParserManager failed.");
+            return PROFAPI_ERROR;
+        }
+
         if (data->type == MSPROF_REPORT_NODE_LAUNCH_TYPE &&
             Mspti::Parser::CannTrackCache::GetInstance().AppendNodeLunch(agingFlag == 1, data) != MSPTI_SUCCESS) {
             MSPTI_LOGE("Report Msprof Compact data to ParserManager failed.");
@@ -142,13 +156,22 @@ int32_t MsptiApiReporterCallbackImpl(uint32_t agingFlag, const MsprofApi * const
             MSPTI_LOGE("Report Msprof Api data to ParserManager failed.");
             return PROFAPI_ERROR;
         }
-    }
+    } break;
 
-    if (data->level == MSPROF_REPORT_HCCL_NODE_LEVEL) {
+    case MSPROF_REPORT_HCCL_NODE_LEVEL:
         if (Mspti::Parser::CannTrackCache::GetInstance().AppendCommunication(agingFlag, data) != MSPTI_SUCCESS) {
             MSPTI_LOGE("Report Msprof Hccl Api data to ParserManager failed.");
             return PROFAPI_ERROR;
         }
+        break;
+    case MSPROF_REPORT_ACL_LEVEL:
+        if (Mspti::Parser::CannApiParser::GetInstance().ReportRtApi(agingFlag, data) != MSPTI_SUCCESS) {
+            MSPTI_LOGE("Report Msprof Acl Api data to ParserManager failed.");
+            return PROFAPI_ERROR;
+        }
+        break;
+    default:
+        break;
     }
 
     return PROFAPI_ERROR_NONE;
@@ -207,10 +230,11 @@ int32_t MsptiAddiInfoReporterCallbackImpl(uint32_t agingFlag, CONST_VOID_PTR dat
 
 int32_t MsptiRegReportTypeInfoImpl(uint16_t level, uint32_t typeId, const char* name, size_t len)
 {
-    UNUSED(level);
-    UNUSED(typeId);
-    UNUSED(name);
-    UNUSED(len);
+    if (name == nullptr) {
+        MSPTI_LOGE("RegTypeInfo failed. name is nullptr");
+        return PROFAPI_ERROR;
+    }
+    Mspti::Parser::CannHashCache::RegTypeHashInfo(level, typeId, std::string(name, len));
     return PROFAPI_ERROR_NONE;
 }
 }

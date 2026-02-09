@@ -90,7 +90,7 @@ size_t ActivityBuffer::ValidSize()
 const std::set<msptiActivityKind> ActivityManager::supportActivityKinds_ = {
     MSPTI_ACTIVITY_KIND_MARKER, MSPTI_ACTIVITY_KIND_KERNEL, MSPTI_ACTIVITY_KIND_API, MSPTI_ACTIVITY_KIND_HCCL,
     MSPTI_ACTIVITY_KIND_MEMORY, MSPTI_ACTIVITY_KIND_MEMSET, MSPTI_ACTIVITY_KIND_MEMCPY,
-    MSPTI_ACTIVITY_KIND_EXTERNAL_CORRELATION, MSPTI_ACTIVITY_KIND_COMMUNICATION
+    MSPTI_ACTIVITY_KIND_EXTERNAL_CORRELATION, MSPTI_ACTIVITY_KIND_COMMUNICATION, MSPTI_ACTIVITY_KIND_ACL_API, MSPTI_ACTIVITY_KIND_NODE_API, MSPTI_ACTIVITY_KIND_RUNTIME_API,
 };
 
 ActivityManager *ActivityManager::GetInstance()
@@ -212,7 +212,10 @@ msptiResult ActivityManager::GetNextRecord(uint8_t *buffer, size_t validBufferSi
         {MSPTI_ACTIVITY_KIND_MEMSET,                sizeof(msptiActivityMemset)},
         {MSPTI_ACTIVITY_KIND_MEMCPY,                sizeof(msptiActivityMemcpy)},
         {MSPTI_ACTIVITY_KIND_EXTERNAL_CORRELATION,  sizeof(msptiActivityExternalCorrelation)},
-        {MSPTI_ACTIVITY_KIND_COMMUNICATION,         sizeof(msptiActivityCommunication)}
+        {MSPTI_ACTIVITY_KIND_COMMUNICATION,         sizeof(msptiActivityCommunication)},
+        {MSPTI_ACTIVITY_KIND_ACL_API,               sizeof(msptiActivityApi)},
+        {MSPTI_ACTIVITY_KIND_NODE_API,              sizeof(msptiActivityApi)},
+        {MSPTI_ACTIVITY_KIND_RUNTIME_API,           sizeof(msptiActivityApi)}
     };
 
     msptiActivityKind *pKind = Common::ReinterpretConvert<msptiActivityKind*>(buffer + pos);

@@ -96,14 +96,7 @@ inline uint64_t GetHashIdImple(const std::string &hashInfo)
     return (((static_cast<uint64_t>(hash[0])) << UINT32_BITS) | hash[1]);
 }
 
-struct TupleHash {
-    template <typename Tuple>
-    std::size_t operator()(const Tuple& t) const
-    {
-        return HashTupleImpl(t, std::make_index_sequence<std::tuple_size<Tuple>::value>{});
-    }
-
-private:
+struct TupleHashImpl {
     template <typename Tuple, std::size_t... I>
     static std::size_t HashTupleImpl(const Tuple& t, std::index_sequence<I...>)
     {
@@ -121,6 +114,25 @@ private:
         seed ^= h + GOLDEN_RATIO
                 + (seed << SHIFT_LEFT)
                 + (seed >> SHIFT_RIGHT);
+    }
+};
+
+struct TupleHash {
+    template <typename Tuple>
+    std::size_t operator()(const Tuple& t) const
+    {
+        return TupleHashImpl::HashTupleImpl(t, std::make_index_sequence<std::tuple_size<Tuple>::value>{});
+    }
+};
+
+struct PairHash {
+    template <typename T1, typename T2>
+    std::size_t operator()(const std::pair<T1, T2>& p) const
+    {
+        std::size_t seed = 0;
+        TupleHashImpl::HashCombine(seed, p.first);
+        TupleHashImpl::HashCombine(seed, p.second);
+        return seed;
     }
 };
 

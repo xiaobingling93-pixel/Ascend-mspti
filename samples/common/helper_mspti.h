@@ -65,7 +65,10 @@ static const char* GetActivityKindString(msptiActivityKind kind)
         {MSPTI_ACTIVITY_KIND_MEMORY, "MEMORY"},
         {MSPTI_ACTIVITY_KIND_MEMSET, "MEMSET"},
         {MSPTI_ACTIVITY_KIND_MEMCPY, "MEMCPY"},
-        {MSPTI_ACTIVITY_KIND_EXTERNAL_CORRELATION, "CORRELATION"}
+        {MSPTI_ACTIVITY_KIND_EXTERNAL_CORRELATION, "CORRELATION"},
+        {MSPTI_ACTIVITY_KIND_RUNTIME_API, "RUNTIME_API"},
+        {MSPTI_ACTIVITY_KIND_ACL_API, "ACL_API"},
+        {MSPTI_ACTIVITY_KIND_NODE_API, "NODE_API"},
     };
     auto it = STRING_MAP.find(kind);
     return it != STRING_MAP.end() ? it->second : "<unknown>";
@@ -148,6 +151,17 @@ static const char* GetResultCodeString(msptiResult result)
     return it != STRING_MAP.end() ? it->second : "<unknown>";
 }
 
+static const char* GetApiLevel(msptiApiLevel apiLevel)
+{
+    static const std::unordered_map<msptiApiLevel, const char*> STRING_MAP = {
+        {MSPTI_API_RUNTIME_LEVEL, "RUNTIME_API"},
+        {MSPTI_API_ACL_LEVEL, "ACL_API"},
+        {MSPTI_API_INNER_LAUNCH_LEVEL, "INNER_LAUNCH_API"}
+    };
+
+    auto it = STRING_MAP.find(apiLevel);
+    return it != STRING_MAP.end() ? it->second : "<unknown>";
+}
 static void ShowKernelInfo(msptiActivityKernel* kernel)
 {
     if (!kernel) {
@@ -238,6 +252,9 @@ void PrintActivity(msptiActivity *pRecord)
             ShowKernelInfo(reinterpret_cast<msptiActivityKernel*>(pRecord));
             break;
         case MSPTI_ACTIVITY_KIND_API:
+        case MSPTI_ACTIVITY_KIND_RUNTIME_API:
+        case MSPTI_ACTIVITY_KIND_ACL_API:
+        case MSPTI_ACTIVITY_KIND_NODE_API:
             ShowApiInfo(reinterpret_cast<msptiActivityApi*>(pRecord));
             break;
         case MSPTI_ACTIVITY_KIND_HCCL:

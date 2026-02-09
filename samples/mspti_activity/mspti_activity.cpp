@@ -131,6 +131,8 @@ void SetUpMspti()
     msptiActivityEnable(MSPTI_ACTIVITY_KIND_MEMCPY);
     msptiActivityEnable(MSPTI_ACTIVITY_KIND_MEMORY);
     msptiActivityEnable(MSPTI_ACTIVITY_KIND_MEMSET);
+    msptiActivityEnable(MSPTI_ACTIVITY_KIND_API);
+    msptiActivityEnable(MSPTI_ACTIVITY_KIND_RUNTIME_API);
 }
 
 int main()

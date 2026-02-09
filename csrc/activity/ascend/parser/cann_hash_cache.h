@@ -19,6 +19,7 @@
 #define MSPTI_PARSER_CANN_HASH_CACHE_H
 
 #include "csrc/common/concurrent_map.h"
+#include "csrc/common/utils.h"
 
 namespace Mspti {
 namespace Parser {
@@ -27,10 +28,14 @@ public:
     static std::string& GetHashInfo(uint64_t hashId);
     static uint64_t GenHashId(const std::string &hashInfo);
     static uint64_t GenHashId(std::string &&hashInfo);
+    static std::string& GetTypeHashInfo(uint16_t level, uint32_t typeId);
+    static void RegTypeHashInfo(uint16_t level, uint32_t typeId, const std::string &hashInfo);
+    static void RegTypeHashInfo(uint16_t level, uint32_t typeId, std::string &&hashInfo);
 private:
     CannHashCache() = default;
     // <hashID, hashInfo>
     static Common::ConcurrentMap<uint64_t, std::string> hashInfoMap_;
+    static Common::ConcurrentMap<std::pair<uint16_t, uint32_t>, std::string, Common::PairHash> typeHashIdMap_;
 };
 }
 }

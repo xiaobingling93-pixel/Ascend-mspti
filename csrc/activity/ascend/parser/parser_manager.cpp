@@ -26,23 +26,6 @@
 
 namespace Mspti {
 namespace Parser {
-namespace {
-inline Mspti::Common::ThreadLocal<msptiActivityApi> GetDefaultApiActivity()
-{
-    static Mspti::Common::ThreadLocal<msptiActivityApi> instance(
-        [] () {
-            auto* activityApi = new(std::nothrow) msptiActivityApi();
-            if (UNLIKELY(activityApi == nullptr)) {
-                MSPTI_LOGE("create activityApi failed");
-                return activityApi;
-            }
-            activityApi->kind = MSPTI_ACTIVITY_KIND_API;
-            activityApi->pt.processId = Mspti::Common::Utils::GetPid();
-            return activityApi;
-        });
-    return instance;
-}
-}
 
 ParserManager *ParserManager::GetInstance()
 {
@@ -65,21 +48,16 @@ msptiResult ParserManager::ReportApi(const MsprofApi* const data)
         return MSPTI_SUCCESS;
     }
 
-    msptiActivityApi* api = GetDefaultApiActivity().Get();
-    if (UNLIKELY(api == nullptr)) {
-        MSPTI_LOGE("Get Default MarkActivity is nullptr");
-        return MSPTI_ERROR_INNER;
-    }
-    api->kind = MSPTI_ACTIVITY_KIND_API;
-    api->pt.processId = Mspti::Common::Utils::GetPid();
-    api->name = name.data();
-    api->pt.threadId = data->threadId;
-    api->start = Mspti::Common::ContextManager::GetInstance()->GetRealTimeFromSysCnt(data->beginTime);
-    api->end = Mspti::Common::ContextManager::GetInstance()->GetRealTimeFromSysCnt(data->endTime);
-    api->correlationId = Mspti::Common::ContextManager::GetInstance()->GetCorrelationId(data->threadId);
-    Mspti::Reporter::ExternalCorrelationReporter::GetInstance()->ReportExternalCorrelationId(api->correlationId);
+    msptiActivityApi api{};
+    api.kind = MSPTI_ACTIVITY_KIND_API;
+    api.pt.processId = Mspti::Common::Utils::GetPid();
+    api.name = name.data();
+    api.pt.threadId = data->threadId;
+    api.start = Mspti::Common::ContextManager::GetInstance()->GetRealTimeFromSysCnt(data->beginTime);
+    api.end = Mspti::Common::ContextManager::GetInstance()->GetRealTimeFromSysCnt(data->endTime);
+    api.correlationId = Mspti::Common::ContextManager::GetInstance()->GetCorrelationId(data->threadId);
     if (Mspti::Activity::ActivityManager::GetInstance()->Record(
-        Common::ReinterpretConvert<msptiActivity*>(api), sizeof(msptiActivityApi)) != MSPTI_SUCCESS) {
+        Common::ReinterpretConvert<msptiActivity*>(&api), sizeof(msptiActivityApi)) != MSPTI_SUCCESS) {
         return MSPTI_ERROR_INNER;
     }
     return MSPTI_SUCCESS;
