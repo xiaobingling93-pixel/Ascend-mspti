@@ -16,6 +16,9 @@
 */
 
 #include "csrc/activity/ascend/channel/stars_common.h"
+#include "stars_common.h"
+
+#include "csrc/common/context_manager.h"
 
 namespace Mspti {
 namespace Convert {
@@ -63,6 +66,15 @@ uint16_t StarsCommon::GetTaskId(uint16_t streamId, uint16_t taskId)
         }
         return taskId;
     }
+}
+
+uint32_t StarsCommon::GetHostTaskId(uint16_t streamId, uint32_t taskInfo, uint32_t deviceId)
+{
+    if (Common::ContextManager::GetInstance()->GetChipType(deviceId) == Common::PlatformType::CHIP_V6) {
+        // v6唯一id
+        return taskInfo;
+    }
+    return GetTaskId(streamId, taskInfo & 0xFFFF);
 }
 } // namespace Parser
 } // namespace Mspti

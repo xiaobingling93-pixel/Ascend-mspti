@@ -228,9 +228,7 @@ uint64_t ContextManager::GetCorrelationId(uint32_t threadId)
 {
     uint32_t tid = (threadId > 0 ? threadId : Common::Utils::GetTid());
     uint64_t ans = MSPTI_INVALID_CORRELATION_ID;
-    if (!threadCorrelationIdInfo_.Find(tid, ans)) {
-        MSPTI_LOGE("Thread %u get correlation id failed.", tid);
-    }
+    threadCorrelationIdInfo_.Find(tid, ans);
     return ans;
 }
 

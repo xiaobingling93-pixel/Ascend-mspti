@@ -151,17 +151,6 @@ static const char* GetResultCodeString(msptiResult result)
     return it != STRING_MAP.end() ? it->second : "<unknown>";
 }
 
-static const char* GetApiLevel(msptiApiLevel apiLevel)
-{
-    static const std::unordered_map<msptiApiLevel, const char*> STRING_MAP = {
-        {MSPTI_API_RUNTIME_LEVEL, "RUNTIME_API"},
-        {MSPTI_API_ACL_LEVEL, "ACL_API"},
-        {MSPTI_API_INNER_LAUNCH_LEVEL, "INNER_LAUNCH_API"}
-    };
-
-    auto it = STRING_MAP.find(apiLevel);
-    return it != STRING_MAP.end() ? it->second : "<unknown>";
-}
 static void ShowKernelInfo(msptiActivityKernel* kernel)
 {
     if (!kernel) {

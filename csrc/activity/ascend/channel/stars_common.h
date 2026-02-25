@@ -48,6 +48,7 @@ public:
     static void SetStreamExpandStatus(uint8_t expandStatus);
     static uint16_t GetStreamId(uint16_t streamId, uint16_t taskId);
     static uint16_t GetTaskId(uint16_t streamId, uint16_t taskId);
+    static uint32_t GetHostTaskId(uint16_t streamId, uint32_t taskInfo, uint32_t deviceId);
 private:
     static bool isExpand;
 };

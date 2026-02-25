@@ -53,7 +53,7 @@ msptiResult CommunicationCalculator::AppendCompactInfo(bool agingFlag, const Msp
     communication->algTypeHash = msprofHcclOpInfo.algType;
     communication->count = msprofHcclOpInfo.count;
     std::lock_guard<std::mutex> lk(communicationOpInfoMutex_);
-    communicationOpInfoQueue_[data->threadId].push(std::move(communication));
+    communicationOpInfoQueue_[data->threadId].insert(std::make_pair(data->timeStamp, std::move(communication)));
     return MSPTI_SUCCESS;
 }
 
@@ -162,9 +162,16 @@ msptiResult CommunicationCalculator::ReportCommunication(const DstType& dstKey,
             Mspti::Activity::ActivityManager::GetInstance()->Record(
                 Common::ReinterpretConvert<msptiActivity *>(&record), sizeof(msptiActivityCommunication));
         } else {
-            auto& it =  communicationOpInfoQueue_[commOp->threadId];
-            if (!it.empty()) {
-                auto& addationOpDesc = communicationOpInfoQueue_[commOp->threadId].front();
+            auto& timeStampOpInfoMap =  communicationOpInfoQueue_[commOp->threadId];
+            if (!timeStampOpInfoMap.empty()) {
+                auto startOpInfo = timeStampOpInfoMap.lower_bound(commOp->hostStartTime);
+                auto endOpInfo = timeStampOpInfoMap.upper_bound(commOp->hostEndTime);
+                if (startOpInfo == timeStampOpInfoMap.end() || startOpInfo == endOpInfo) {
+                    MSPTI_LOGW("can not find addition info for communication op, threadId: %lu, hostStartTime: %lu, "
+                               "hostEndTime: %lu", commOp->threadId, commOp->hostStartTime, commOp->hostEndTime);
+                    return MSPTI_ERROR_INNER;
+                }
+                auto& addationOpDesc = startOpInfo->second;
                 msptiActivityCommunication record{};
                 AssembleTaskInfo(record, addationOpDesc.get(), commOp.get());
                 Mspti::Activity::ActivityManager::GetInstance()->Record(
@@ -172,7 +179,7 @@ msptiResult CommunicationCalculator::ReportCommunication(const DstType& dstKey,
                 if (!commOp->agingFlag) {
                     taskId2AdditionInfo.emplace(dstKey, std::move(addationOpDesc));
                 }
-                communicationOpInfoQueue_[commOp->threadId].pop();
+                timeStampOpInfoMap.erase(startOpInfo, endOpInfo);
             }
             }
         }

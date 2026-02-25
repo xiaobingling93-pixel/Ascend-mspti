@@ -141,19 +141,17 @@ msptiResult KernelParser::KernelParserImpl::DealCacheHostTask()
         // GetKernelBasicInfo
         uint16_t streamId = Convert::StarsCommon::GetStreamId(hostTask.streamId,
                                                               static_cast<uint16_t>(hostTask.taskInfo));
-        uint16_t taskId = Convert::StarsCommon::GetTaskId(hostTask.streamId,
-                                                          static_cast<uint16_t>(hostTask.taskInfo));
+        uint32_t taskId = Convert::StarsCommon::GetHostTaskId(hostTask.streamId, hostTask.taskInfo, hostTask.deviceId);
         uint16_t deviceId = hostTask.deviceId;
         bool agingFlag = hostTask.agingFlag;
         const char* kernelTypeName = GetValidKernelTypeName(static_cast<TsTaskType>(hostTask.taskType));
         auto kernel = activityPool.acquire();
         kernel->ds.deviceId = deviceId;
         kernel->ds.streamId = streamId;
-    kernel->kind = MSPTI_ACTIVITY_KIND_KERNEL;
+        kernel->kind = MSPTI_ACTIVITY_KIND_KERNEL;
         kernel->name = CannHashCache::GetHashInfo(hostTask.kernelHash).c_str();
         kernel->type = kernelTypeName;
         kernel->correlationId = hostTask.corrleationId;
-
         DstType dstKey = std::make_tuple(deviceId, streamId, taskId);
         if (Common::ContextManager::GetInstance()->GetChipType(deviceId) == Common::PlatformType::CHIP_V6) {
             // 唯一id
@@ -214,7 +212,7 @@ msptiResult KernelParser::KernelParserImpl::DealUnAgingRtTaskTrack(const DeviceT
 bool KernelParser::KernelParserImpl::ParseDeviceTask(uint32_t deviceId, const SocLog& socLog, DeviceTaskPtr& task)
 {
     uint16_t streamId = socLog.streamId;
-    uint16_t taskId = socLog.taskId;
+    uint32_t taskId = socLog.taskId;
     auto dstKey = std::make_tuple(static_cast<uint16_t>(deviceId), streamId, taskId);
     if (!kernel_map_.count(dstKey) && !unaging_kernel_map_.count(dstKey)) {
         return false;

@@ -58,7 +58,7 @@ private:
     std::unordered_map<DstType, std::pair<uint64_t, bool>, Common::TupleHash> communicationTask2Op_;
 
     std::mutex communicationOpInfoMutex_;
-    std::unordered_map<std::uint64_t, std::queue<std::unique_ptr<CommunicationOpDesc>>>
+    std::unordered_map<std::uint64_t, std::map<std::uint64_t, std::unique_ptr<CommunicationOpDesc>>>
         communicationOpInfoQueue_;
     std::unordered_map<DstType, std::unique_ptr<CommunicationOpDesc>, Common::TupleHash> taskId2AdditionInfo;
 };
