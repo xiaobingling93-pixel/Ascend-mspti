@@ -39,6 +39,7 @@ RUN_SCRIPT_DIR=${TOP_DIR}/scripts/run_script
 FILTER_PARAM_SCRIPT=${RUN_SCRIPT_DIR}/help.conf
 MAIN_SCRIPT=main.sh
 INSTALL_SCRIPT=install.sh
+UNINSTALL_SCRIPT=uninstall.sh
 UTILS_SCRIPT=utils.sh
 
 MSPTI_RUN_NAME="mindstudio-profiler-tools-interface"
@@ -83,6 +84,7 @@ function create_temp_dir() {
     copy_script ${MAIN_SCRIPT} ${temp_dir}
     copy_script ${INSTALL_SCRIPT} ${temp_dir}
     copy_script ${UTILS_SCRIPT} ${temp_dir}
+    copy_script ${UNINSTALL_SCRIPT} ${temp_dir}
 }
 
 # copy script
@@ -115,7 +117,7 @@ function version() {
 
 function get_package_name() {
     local name=${MSPTI_RUN_NAME}
-    local version=$(echo $(version) | cut -d '.' -f 1,2,3)
+    local version=$(version)
     local os_arch=$(arch)
     echo "${name}_${version}_${os_arch}.run"
 }
@@ -160,10 +162,9 @@ function check_file_exist() {
     local temp_dir=${1}
     check_package ${temp_dir}/mspti-0.0.1-py3-none-any.whl ${PKG_LIMIT_SIZE}
     check_package ${temp_dir}/${INSTALL_SCRIPT} ${PKG_LIMIT_SIZE}
+    check_package ${temp_dir}/${UNINSTALL_SCRIPT} ${PKG_LIMIT_SIZE}
     check_package ${temp_dir}/${UTILS_SCRIPT} ${PKG_LIMIT_SIZE}
     check_package ${temp_dir}/${MAIN_SCRIPT} ${PKG_LIMIT_SIZE}
-    check_package ${temp_dir}/${COMMON_DIR}/${COMMON_UNINSTALL} ${PKG_LIMIT_SIZE}
-    check_package ${temp_dir}/${UNINSTALL} ${PKG_LIMIT_SIZE}
     check_package ${temp_dir}/libmspti.so ${PKG_LIMIT_SIZE}
     check_package ${temp_dir}/mspti.h ${PKG_LIMIT_SIZE}
     check_package ${temp_dir}/mspti_activity.h ${PKG_LIMIT_SIZE}

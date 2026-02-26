@@ -41,6 +41,10 @@ MSPTI_HEADER=(
     mspti_cbid.h
     mspti_result.h
 )
+UNINSTALL_SCRIPT=uninstall.sh
+UNINSTALL_SCRIPT_DIR="share/info/mspti/script"
+CANN_UNINSTALL_SCRIPT="cann_uninstall.sh"
+UTILS_SCRIPT=utils.sh
 
 # log level
 LEVEL_ERROR="ERROR"
@@ -94,6 +98,19 @@ function check_path() {
         print $LEVEL_ERROR "The path ${install_path} does not exist, please check."
         exit 1
     fi
+}
+
+function remove() {
+    local target_path=${1}
+    if [ ! -d "${target_path}" ] && [ ! -f "${target_path}" ]; then
+        return
+    fi
+    local parent_dir=$(dirname ${target_path})
+    local parent_right=$(stat -c '%a' ${parent_dir})
+    chmod u+wx ${parent_dir}
+    chmod -R u+wx ${target_path}
+    rm -rf ${target_path}
+    chmod ${parent_right} ${parent_dir}
 }
 
 # init log file

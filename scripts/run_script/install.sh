@@ -16,7 +16,6 @@
 # See the Mulan PSL v2 for more details.
 # -------------------------------------------------------------------------
 install_path=${1}
-package_arch=${2}
 install_for_all_flag=${3}
 pylocal=y
 
@@ -38,7 +37,7 @@ function install_whl_package() {
     print ${LEVEL_INFO} "Start to install ${_package}."
     if [ ! -f "${_package}" ]; then
         print ${LEVEL_ERROR} "The ${_package} does not exist."
-        return
+        return 1
     fi
     if [ "-${_pylocal}" = "-y" ]; then
         pip3 install --upgrade --no-deps --force-reinstall "${_package}" -t "${_pythonlocalpath}" > /dev/null 2>&1
@@ -51,9 +50,10 @@ function install_whl_package() {
     fi
     if [ $? -ne 0 ]; then
         print ${LEVEL_ERROR} "Install ${_package} failed."
-        return
+        return 1
     fi
     print ${LEVEL_INFO} "Install ${_package} success."
+    return 0
 }
 
 function implement_install() {
@@ -61,11 +61,15 @@ function implement_install() {
     create_directory ${install_path}/${MSPTI_INCLUDE_PATH} ${right}
     create_directory ${install_path}/${MSPTI_LIB_PATH} ${right}
     create_directory ${install_path}/${MSPTI_PYTHON_PATH} ${right}
+    create_directory ${install_path}/share/info/mspti ${right}
+    create_directory ${install_path}/${UNINSTALL_SCRIPT_DIR} ${right}
     for header in "${MSPTI_HEADER[@]}"; do
         copy_file ${header} ${install_path}/${MSPTI_INCLUDE_PATH}/${header} ${mspti_right}
     done
     copy_file ${LIBMSPTI} ${install_path}/${MSPTI_LIB_PATH}/${LIBMSPTI} ${mspti_right}
     copy_file ${SAMPLES} ${install_path}/${MSPTI_PATH}/${SAMPLES} ${right}
+    copy_file ${UNINSTALL_SCRIPT} ${install_path}/${UNINSTALL_SCRIPT_DIR}/${UNINSTALL_SCRIPT} ${right}
+    copy_file ${UTILS_SCRIPT} ${install_path}/${UNINSTALL_SCRIPT_DIR}/${UTILS_SCRIPT} ${right}
     local mspti_whl=${install_path}/${MSPTI_PYTHON_PATH}/${MSPTI_WHL}
     copy_file ${MSPTI_WHL} ${mspti_whl} ${right}
     install_whl_package ${pylocal} ${mspti_whl} ${install_path}/python/site-packages
@@ -77,7 +81,7 @@ function copy_file() {
     local _right=${3}
     if [ ! -f "${filename}" ] && [ ! -d "${filename}" ]; then
         print ${LEVEL_ERROR} "${filename} does not exist."
-        exit 1
+        return 1
     fi
     if [ -f "${target_file}" ] || [ -d "${target_file}" ]; then
         local parent_dir=$(dirname ${target_file})
@@ -93,6 +97,7 @@ function copy_file() {
         chmod -R ${_right} ${target_file}
     fi
     print ${LEVEL_INFO} "${filename} copy success."
+    return 0
 }
 
 function create_directory() {
@@ -112,8 +117,33 @@ function create_directory() {
     fi
 }
 
+function register_uninstall() {
+    local target_line='uninstall_package "share/info/mspti/script"'
+    if [ ! -f "${install_path}/${UNINSTALL_SCRIPT_DIR}/${UNINSTALL_SCRIPT}" ]; then
+        print ${LEVEL_ERROR} "No such file: ${install_path}/${UNINSTALL_SCRIPT_DIR}/${UNINSTALL_SCRIPT}"
+    fi
+    if [ ! -x "${install_path}/${UNINSTALL_SCRIPT_DIR}/${UNINSTALL_SCRIPT}" ]; then
+        print ${LEVEL_ERROR} "The file ${install_path}/${UNINSTALL_SCRIPT_DIR}/${UNINSTALL_SCRIPT} is not executable."
+        return 1
+    fi
+    if [ ! -f "${install_path}/${CANN_UNINSTALL_SCRIPT}" ]; then
+        print ${LEVEL_ERROR} "Failed to register uninstall script, no such file: ${install_path}/${CANN_UNINSTALL_SCRIPT}"
+        return 1
+    fi
+    if grep -qxF "${target_line}" "${install_path}/${CANN_UNINSTALL_SCRIPT}"; then
+        return 0
+    fi
+    local script_right=$(stat -c '%a' "${install_path}/${CANN_UNINSTALL_SCRIPT}")
+    chmod u+w "${install_path}/${CANN_UNINSTALL_SCRIPT}"
+    sed -i "/^exit /i uninstall_package \"share\/info\/mspti\/script\"" "${install_path}/${CANN_UNINSTALL_SCRIPT}"
+    chmod ${script_right} "${install_path}/${CANN_UNINSTALL_SCRIPT}"
+}
+
 source utils.sh
 
 right=${user_right}
 get_right
 implement_install
+if [ $? -eq 0 ]; then
+    register_uninstall
+fi
