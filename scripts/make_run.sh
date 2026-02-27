@@ -81,6 +81,7 @@ function create_temp_dir() {
     cp ${TOP_DIR}/csrc/include/mspti_cbid.h ${temp_dir}
     cp ${TOP_DIR}/csrc/include/mspti_result.h ${temp_dir}
     cp -r ${TOP_DIR}/samples ${temp_dir}
+    cp -r ${TOP_DIR}/version.info ${temp_dir}
     copy_script ${MAIN_SCRIPT} ${temp_dir}
     copy_script ${INSTALL_SCRIPT} ${temp_dir}
     copy_script ${UTILS_SCRIPT} ${temp_dir}
@@ -101,14 +102,10 @@ function copy_script() {
 }
 
 function version() {
-    local path="${TOP_DIR}/../manifest/dependency/config.ini"
     if [[ "$VERSION" != "none" ]]; then
         echo "${VERSION}"
-    elif [ -f "${path}" ]; then
-        local version=$(grep "^version=" "${path}" | cut -d"=" -f2)
-        echo "${version}"
-    elif [ -f "${TOP_DIR}/version.txt" ]; then
-        local version=$(grep "^version=" "${TOP_DIR}/version.txt" | cut -d"=" -f2)
+    elif [ -f "${TOP_DIR}/version.info" ]; then
+        local version=$(grep "^Version=" "${TOP_DIR}/version.info" | cut -d"=" -f2)
         echo "${version}"
     else
         echo "${VERSION}"

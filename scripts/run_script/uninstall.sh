@@ -37,6 +37,6 @@ function delete_register_uninstall() {
 source utils.sh
 delete_register_uninstall
 remove ${install_path}/${MSPTI_PATH}
-remove ${install_path}/share/info/mspti
+remove ${install_path}/${MSPTI_SHARE_INFO}
 remove ${install_path}/python/site-packages/mspti
 remove ${install_path}/python/site-packages/mspti-0.0.1.dist-info

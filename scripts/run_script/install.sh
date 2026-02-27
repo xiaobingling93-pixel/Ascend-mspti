@@ -70,6 +70,7 @@ function implement_install() {
     copy_file ${SAMPLES} ${install_path}/${MSPTI_PATH}/${SAMPLES} ${right}
     copy_file ${UNINSTALL_SCRIPT} ${install_path}/${UNINSTALL_SCRIPT_DIR}/${UNINSTALL_SCRIPT} ${right}
     copy_file ${UTILS_SCRIPT} ${install_path}/${UNINSTALL_SCRIPT_DIR}/${UTILS_SCRIPT} ${right}
+    copy_file ${VERSION_INFO} ${install_path}/${MSPTI_SHARE_INFO}/${VERSION_INFO} ${right}
     local mspti_whl=${install_path}/${MSPTI_PYTHON_PATH}/${MSPTI_WHL}
     copy_file ${MSPTI_WHL} ${mspti_whl} ${right}
     install_whl_package ${pylocal} ${mspti_whl} ${install_path}/python/site-packages

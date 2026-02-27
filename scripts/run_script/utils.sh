@@ -41,10 +41,12 @@ MSPTI_HEADER=(
     mspti_cbid.h
     mspti_result.h
 )
-UNINSTALL_SCRIPT=uninstall.sh
-UNINSTALL_SCRIPT_DIR="share/info/mspti/script"
+UNINSTALL_SCRIPT="uninstall.sh"
+MSPTI_SHARE_INFO="share/info/mspti"
+UNINSTALL_SCRIPT_DIR="${MSPTI_SHARE_INFO}/script"
 CANN_UNINSTALL_SCRIPT="cann_uninstall.sh"
-UTILS_SCRIPT=utils.sh
+UTILS_SCRIPT="utils.sh"
+VERSION_INFO="version.info"
 
 # log level
 LEVEL_ERROR="ERROR"
