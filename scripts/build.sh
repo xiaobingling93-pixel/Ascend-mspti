@@ -19,16 +19,38 @@
 set -e
 CUR_DIR=$(dirname $(readlink -f $0))
 TOP_DIR=${CUR_DIR}/..
-VERSION=""
 BUILD_TYPE="Release"
+VERSION=""
 
-# input param check
-if [[ $# -gt 2 ]]; then
-    echo "[ERROR]Please input valid param, for example:"
-    echo "       ./build.sh                 # Default"
-    echo "       ./build.sh Debug           # Debug"
-    echo "       ./build.sh [version]       # With Version"
-    exit
+print_help() {
+    cat << EOF
+Usage:
+  bash smoke.sh [options]
+
+Description:
+  Used for building Ascend-mindstudio-mspti_<version>_linux-<arch>.run
+
+Options:
+  --help | -h    Show this help message
+  Debug          Build with Debug mode, only the first (and only) parameter is valid
+  <version>      Build with specified version, only the first (and only) parameter is valid
+
+Examples:
+  bash smoke.sh
+  bash smoke.sh Debug
+  bash smoke.sh v1.2.3
+EOF
+}
+
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    print_help
+    exit 0
+elif [ $# -gt 1 ]; then
+    cat << EOF
+[ERROR] Invalid parameters! (only one parameter allowed)
+EOF
+    print_help
+    exit 1
 fi
 
 if [ $# -eq 1 ] && [ "$1" = "Debug" ]; then

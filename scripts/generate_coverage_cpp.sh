@@ -22,7 +22,10 @@ TOP_DIR=${CUR_DIR}/..
 COV_DIR=${TOP_DIR}/test/build_llt/output/cpp_coverage
 BUILD_DIR=${TOP_DIR}/test/build_llt
 
-LCOV_RC="--rc lcov_branch_coverage=1 --rc geninfo_no_exception_branch=1"
+LCOV_RC="--ignore-errors inconsistent,mismatch,negative,empty,unused,unsupported
+--rc lcov_branch_coverage=1
+--rc geninfo_no_exception_branch=1"
+GENHTML_RC="--ignore-errors inconsistent,corrupt --branch-coverage"
 
 if [ ! -d ${COV_DIR} ] ; then
     mkdir -p ${COV_DIR}
@@ -35,19 +38,20 @@ generate_coverage(){
     lcov -r ${COV_DIR}/lcov_$2.info '*c++*' -o ${COV_DIR}/lcov_$2.info $LCOV_RC
     lcov -r ${COV_DIR}/lcov_$2.info '*gtest*' -o ${COV_DIR}/lcov_$2.info $LCOV_RC
     lcov -r ${COV_DIR}/lcov_$2.info '*opensource*' -o ${COV_DIR}/lcov_$2.info $LCOV_RC
+    lcov -r ${COV_DIR}/lcov_$2.info '*mspti_cpp*' -o ${COV_DIR}/lcov_$2.info $LCOV_RC
     echo "********************** Generate $2 Coverage Stop.*************************"
 }
 #----------------------------------------------------------
 test_obj=(
     activity_utest
-    dev_prof_task_utest
-    callback_utest
-    context_manager_utest
-    mspti_utils_utest
     mspti_channel_utest
+    dev_prof_task_utest
     mspti_parser_utest
     mspti_reporter_utest
+    callback_utest
+    context_manager_utest
     function_loader_utest
+    mspti_utils_utest
     mspti_adapter_utest
 )
 
@@ -62,7 +66,7 @@ done
 
 echo "${str_test}"
 lcov ${str_test} -o ${COV_DIR}/ut_report.info $LCOV_RC
-genhtml ${COV_DIR}/ut_report.info -o ${COV_DIR}/result --branch-coverage
+genhtml ${COV_DIR}/ut_report.info -o ${COV_DIR}/result $GENHTML_RC
 echo "report: ${COV_DIR}"
 
 if [[ -n "$1" && "$1" == "diff" ]];then

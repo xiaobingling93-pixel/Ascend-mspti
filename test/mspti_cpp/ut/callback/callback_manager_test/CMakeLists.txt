@@ -21,13 +21,4 @@ add_executable(callback_utest
     ${UT_TOP_DIR}/stub/inject/acl_inject_stub.cpp
 )
 
-set_target_properties(callback_utest
-    PROPERTIES
-    OUTPUT_NAME callback_utest
-    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-)
-
-run_llt_test(
-    TARGET callback_utest
-    TASK_NUM 1
-)
+run_test(callback_utest)

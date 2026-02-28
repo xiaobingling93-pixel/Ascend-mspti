@@ -43,21 +43,4 @@ add_executable(mspti_channel_utest
     ${UT_TOP_DIR}/stub/inject/hccl_inject_stub.cpp
 )
 
-target_include_directories(mspti_channel_utest PRIVATE
-    ${MOCKCPP_INCLUDE_DIR}
-)
-
-target_link_libraries(mspti_channel_utest PRIVATE
-    ${MOCKCPP_STATIC_LIBRARY}
-)
-
-set_target_properties(mspti_channel_utest
-    PROPERTIES
-    OUTPUT_NAME mspti_channel_utest
-    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-)
-
-run_llt_test(
-    TARGET mspti_channel_utest
-    TASK_NUM 1
-)
+run_test(mspti_channel_utest)

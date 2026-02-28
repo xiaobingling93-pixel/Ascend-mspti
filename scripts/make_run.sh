@@ -1,5 +1,5 @@
 #!/bin/bash
-# get real path of parents' dir of this file
+# This script is used to build run package
 # -------------------------------------------------------------------------
 # Copyright (c) 2025 Huawei Technologies Co., Ltd.
 # This file is part of the MindStudio project.

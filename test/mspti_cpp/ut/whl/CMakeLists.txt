@@ -31,25 +31,11 @@ add_executable(mspti_adapter_utest
 )
 
 target_include_directories(mspti_adapter_utest PRIVATE
-    ${MOCKCPP_INCLUDE_DIR}
     ${Python_INCLUDE_DIRS}
 )
 
-message("*****************************************************")
-message(${Python_LIBRARIES})
-message("*****************************************************")
 target_link_libraries(mspti_adapter_utest PRIVATE
-    ${MOCKCPP_STATIC_LIBRARY}
     ${Python_LIBRARIES}
 )
 
-set_target_properties(mspti_adapter_utest
-    PROPERTIES
-    OUTPUT_NAME mspti_adapter_utest
-    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-)
-
-run_llt_test(
-    TARGET mspti_adapter_utest
-    TASK_NUM 1
-)
+run_test(mspti_adapter_utest)

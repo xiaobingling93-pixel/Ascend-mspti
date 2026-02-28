@@ -75,29 +75,29 @@ function check_path() {
     local path_str=${1}
     # check the length of path
     if [ ${#path_str} -gt ${PATH_LENGTH} ]; then
-        print $LEVEL_ERROR "parameter error $path_str, the length exceeds ${PATH_LENGTH}."
+        print $LEVEL_ERROR "Invalid parameter: '${path_str}' , the length exceeds ${PATH_LENGTH}."
         exit 1
     fi
     # check absolute path
     if [[ ! "${path_str}" =~ ^/.* ]]; then
-        print $LEVEL_ERROR "parameter error $path_str, must be an absolute path."
+        print $LEVEL_ERROR "Invalid parameter: '${path_str}' is not an absolute path."
         exit 1
     fi
     # black list
     if echo "${path_str}" | grep -Eq '\/{2,}|\.{3,}'; then
-        print $LEVEL_ERROR "The path ${path_str} is invalid, cannot contain the following characters: // ...!"
+        print $LEVEL_ERROR "The path '${path_str}' is invalid, cannot contain the following characters: // ...!"
         exit 1
     fi
     # white list
     if echo "${path_str}" | grep -Eq '^\~?[a-zA-Z0-9./_-]*$'; then
         :
     else
-        print $LEVEL_ERROR "The path ${path_str} is invalid, only [a-z,A-Z,0-9,-,_] is support!"
+        print $LEVEL_ERROR "The path '${path_str}' is invalid, only [a-z,A-Z,0-9,-,_] is support!"
         exit 1
     fi
     # check the existence of the path
     if [ ! -e "${install_path}" ]; then
-        print $LEVEL_ERROR "The path ${install_path} does not exist, please check."
+        print $LEVEL_ERROR "The path '${install_path}' does not exist, please check."
         exit 1
     fi
 }

@@ -22,35 +22,47 @@ include_directories(
     ${TOP_DIR}/csrc/include
     ${TOP_DIR}/platform/securec/include
     ${GTEST_INCLUDE_DIR}
+    ${MOCKCPP_INCLUDE_DIR}
 )
 
-# common compile option
-add_compile_options(
-    -g
-    -pipe
-    -Wall
-    -std=c++14
-    -fno-access-control
-    -Wfloat-equal
-    -Wextra
-    -D_GLIBCXX_USE_CXX11_ABI=0
-    -fprofile-arcs
-    -ftest-coverage
-)
+function(run_test test_case)
+    target_compile_options(${test_case} PRIVATE
+        -g
+        -pipe
+        -Wall
+        -std=c++14
+        -fno-access-control
+        -Wfloat-equal
+        -Wextra
+        -D_GLIBCXX_USE_CXX11_ABI=0
+        -fprofile-arcs
+        -ftest-coverage
+    )
 
-# common link options
-add_link_options(
-    -lgcov
-    --coverage
-)
+    target_link_options(${test_case} PRIVATE
+        -lgcov
+        --coverage
+    )
 
-# common link library
-link_libraries(
-    ${GTEST_STATIC_LIBRARY}
-    c_sec_static
-    pthread
-    dl
-)
+    target_link_libraries(${test_case} PRIVATE
+        ${GTEST_STATIC_LIBRARY}
+        ${MOCKCPP_STATIC_LIBRARY}
+        c_sec_static
+        pthread
+        dl
+    )
+
+    set_target_properties(${test_case}
+        PROPERTIES
+        OUTPUT_NAME ${test_case}
+        LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
+
+    run_llt_test(
+        TARGET ${test_case}
+        TASK_NUM 1
+    )
+endfunction()
 
 add_subdirectory(activity)
 add_subdirectory(callback)

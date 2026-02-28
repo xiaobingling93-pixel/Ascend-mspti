@@ -16,15 +16,6 @@ add_executable(function_loader_utest
     ${UT_TOP_DIR}/stub/inject/acl_inject_stub.cpp
 )
 
-set_target_properties(function_loader_utest
-    PROPERTIES
-    OUTPUT_NAME function_loader_utest
-    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 add_dependencies(function_loader_utest profapi)
 
-run_llt_test(
-    TARGET function_loader_utest
-    TASK_NUM 1
-)
+run_test(function_loader_utest)
