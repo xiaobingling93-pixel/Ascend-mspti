@@ -179,26 +179,24 @@ void DevTaskManager::InitDeviceList()
 
 void DevTaskManager::RegisterReportCallback()
 {
-    if (Mspti::Inject::profRegReporterCallback(Mspti::Inject::Detail::MsprofReporterCallbackImpl) != MSPTI_SUCCESS) {
+    if (Mspti::Inject::profRegReporterCallback(Mspti::Inject::MsprofReporterCallbackImpl) != MSPTI_SUCCESS) {
         MSPTI_LOGE("Failed to register origin reporter callback");
     }
     static const std::vector<std::pair<int, VOID_PTR>> CALLBACK_FUNC_LIST = {
         {PROFILE_REPORT_GET_HASH_ID_C_CALLBACK,
-            reinterpret_cast<VOID_PTR>(Mspti::Inject::Detail::MsptiGetHashIdImpl)},
+            reinterpret_cast<VOID_PTR>(Mspti::Inject::MsptiGetHashIdImpl)},
         {PROFILE_HOST_FREQ_IS_ENABLE_C_CALLBACK,
-            reinterpret_cast<VOID_PTR>(Mspti::Inject::Detail::MsptiHostFreqIsEnableImpl)},
+            reinterpret_cast<VOID_PTR>(Mspti::Inject::MsptiHostFreqIsEnableImpl)},
         {PROFILE_REPORT_API_C_CALLBACK,
-            reinterpret_cast<VOID_PTR>(Mspti::Inject::Detail::MsptiApiReporterCallbackImpl)},
+            reinterpret_cast<VOID_PTR>(Mspti::Inject::MsptiApiReporterCallbackImpl)},
         {PROFILE_REPORT_EVENT_C_CALLBACK,
-            reinterpret_cast<VOID_PTR>(Mspti::Inject::Detail::MsptiEventReporterCallbackImpl)},
+            reinterpret_cast<VOID_PTR>(Mspti::Inject::MsptiEventReporterCallbackImpl)},
         {PROFILE_REPORT_COMPACT_CALLBACK,
-            reinterpret_cast<VOID_PTR>(Mspti::Inject::Detail::MsptiCompactInfoReporterCallbackImpl)},
+            reinterpret_cast<VOID_PTR>(Mspti::Inject::MsptiCompactInfoReporterCallbackImpl)},
         {PROFILE_REPORT_ADDITIONAL_CALLBACK,
-            reinterpret_cast<VOID_PTR>(Mspti::Inject::Detail::MsptiAddiInfoReporterCallbackImpl)},
+            reinterpret_cast<VOID_PTR>(Mspti::Inject::MsptiAddiInfoReporterCallbackImpl)},
         {PROFILE_REPORT_REG_TYPE_INFO_C_CALLBACK,
-            reinterpret_cast<VOID_PTR>(Mspti::Inject::Detail::MsptiRegReportTypeInfoImpl)},
-        {PROFILE_DEVICE_STATE_C_CALLBACK,
-            reinterpret_cast<VOID_PTR>(Mspti::Inject::Detail::MsprofDeviceStateImpl)},
+            reinterpret_cast<VOID_PTR>(Mspti::Inject::MsptiRegReportTypeInfoImpl)},
     };
     for (auto iter : CALLBACK_FUNC_LIST) {
         auto ret = Mspti::Inject::MsprofRegisterProfileCallback(iter.first, iter.second, sizeof(VOID_PTR));

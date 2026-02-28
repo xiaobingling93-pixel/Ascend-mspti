@@ -145,10 +145,5 @@ bool Utils::CheckCharValid(const std::string &str)
     return true;
 }
 
-std::string Utils::GetEnv(const std::string& name) {
-    const char* value = std::getenv(name.c_str());
-    return value ? std::string(value) : std::string();
-}
-
 }  // Common
 }  // Mspti

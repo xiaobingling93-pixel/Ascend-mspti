@@ -67,7 +67,6 @@ protected:
     {
         Mspti::Activity::ActivityManager::GetInstance()->RegisterCallbacks(UserBufferRequest, UserBufferComplete);
         GlobalMockObject::verify();
-        setenv("LD_PRELOAD", "libmspti.so", 1);
     }
     virtual void TearDown() {}
 };

@@ -16,16 +16,12 @@
 */
 #include "gtest/gtest.h"
 
-#include <cstdlib>
 #include "mspti.h"
-
 #include "csrc/callback/callback_manager.h"
 
 class CallbackUtest : public testing::Test {
 protected:
-    virtual void SetUp() {
-        setenv("LD_PRELOAD", "libmspti.so", 1);
-    }
+    virtual void SetUp() {}
     virtual void TearDown() {}
 };
 

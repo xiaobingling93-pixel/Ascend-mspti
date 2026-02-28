@@ -31,31 +31,6 @@
 namespace Mspti {
 namespace Activity {
 
-namespace {
-    
-msptiResult IsNeedLdPreload(msptiActivityKind kind)
-{
-    // Some activity kinds depend on LD_PRELOAD hooking (libmspti.so). If those
-    // kinds are enabled but LD_PRELOAD does not contain libmspti.so, return
-    // MSPTI_ERROR_WITHOUT_LD_PRELOAD to notify the caller.
-    static const std::set<msptiActivityKind> needLdPreloadKinds = {
-        MSPTI_ACTIVITY_KIND_HCCL,
-        MSPTI_ACTIVITY_KIND_MEMORY,
-        MSPTI_ACTIVITY_KIND_MEMSET,
-        MSPTI_ACTIVITY_KIND_MEMCPY
-    };
-
-    if (needLdPreloadKinds.find(kind) != needLdPreloadKinds.end()) {
-        static const std::string ld = Mspti::Common::Utils::GetEnv("LD_PRELOAD");
-        if (ld.find("libmspti.so") == std::string::npos) {
-            MSPTI_LOGE("Enable activity kind %d requires libmspti.so in LD_PRELOAD.", static_cast<int>(kind));
-            return MSPTI_ERROR_WITHOUT_LD_PRELOAD;
-        }
-    }
-    return MSPTI_SUCCESS;
-}
-}
-
 void ActivityBuffer::Init(msptiBuffersCallbackRequestFunc func)
 {
     if (func == nullptr) {
@@ -178,19 +153,17 @@ msptiResult ActivityManager::RegisterCallbacks(
     return MSPTI_SUCCESS;
 }
 
-
 msptiResult ActivityManager::Register(msptiActivityKind kind)
 {
     if (supportActivityKinds_.find(kind) == supportActivityKinds_.end()) {
         MSPTI_LOGE("The ActivityKind: %d was not support.", static_cast<int>(kind));
         return MSPTI_ERROR_INVALID_PARAMETER;
     }
-    if (IsNeedLdPreload(kind) != MSPTI_SUCCESS) {
-        return MSPTI_ERROR_WITHOUT_LD_PRELOAD;
+    {
+        activity_switch_[kind] = true;
+        append_only_activity_switch_[kind] = true;
+        MSPTI_LOGI("Register Activity kind: %d", static_cast<int>(kind));
     }
-    activity_switch_[kind] = true;
-    append_only_activity_switch_[kind] = true;
-    MSPTI_LOGI("Register Activity kind: %d", static_cast<int>(kind));
     std::lock_guard<std::mutex> lk(devices_mtx_);
     ActivitySwitchType curOpenSwitch{};
     curOpenSwitch[kind] = true;

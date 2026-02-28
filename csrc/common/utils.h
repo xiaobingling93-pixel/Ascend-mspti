@@ -148,7 +148,6 @@ public:
     static bool FileExist(const std::string &path);
     static bool FileReadable(const std::string &path);
     static bool CheckCharValid(const std::string &str);
-    static std::string GetEnv(const std::string& name);
 };
 
 }  // Common

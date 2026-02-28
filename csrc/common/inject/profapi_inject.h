@@ -36,9 +36,6 @@ enum ProfilerCallbackType {
     PROFILE_REPORT_REG_TYPE_INFO_C_CALLBACK,
     PROFILE_REPORT_GET_HASH_ID_C_CALLBACK,
     PROFILE_HOST_FREQ_IS_ENABLE_C_CALLBACK,
-    PROFILE_REPORT_REG_DATA_FORMAT_CALLBACK,
-    PROFILE_REPORT_REG_DATA_FORMAT_C_CALLBACK,
-    PROFILE_DEVICE_STATE_C_CALLBACK,
 };
 
 #define MSPROF_DATA_HEAD_MAGIC_NUM  0x5a5a
@@ -212,13 +209,6 @@ enum CommandHandleType {
     PROF_COMMANDHANDLE_TYPE_FINALIZE,
 };
 
-struct ProfSetDevPara
-{
-    uint32_t chipId;
-    uint32_t devId;
-    bool isOpen;
-};
-
 namespace Mspti {
 namespace Inject {
 
@@ -235,19 +225,15 @@ enum ProfApiErrorCode {
 // 老的数据上报方式，待Lite-Profiling废弃后删除
 using ProfReportHandle = int32_t (*)(uint32_t moduleId, uint32_t type, VOID_PTR data, uint32_t len);
 int32_t profRegReporterCallback(ProfReportHandle reporter);
+int32_t MsprofReporterCallbackImpl(uint32_t moduleId, uint32_t type, VOID_PTR data, uint32_t len);
 
 // 使能接口
 using MsprofCtrlHandle = int32_t (*)(uint32_t type, VOID_PTR data, uint32_t len);
 int32_t profRegCtrlCallback(MsprofCtrlHandle handle);
 int32_t profSetProfCommand(VOID_PTR command, uint32_t len);
-using ProfSetDeviceHandle = int32_t (*)(VOID_PTR deviceState, uint32_t len);
-int32_t profRegDeviceStateCallback(ProfSetDeviceHandle handle);
 
 // 新数据结构上报方式
 int32_t MsprofRegisterProfileCallback(int32_t callbackType, VOID_PTR callback, uint32_t len);
-
-namespace Detail {
-int32_t MsprofReporterCallbackImpl(uint32_t moduleId, uint32_t type, VOID_PTR data, uint32_t len);
 int8_t MsptiHostFreqIsEnableImpl();
 uint64_t MsptiGetHashIdImpl(const char* hashInfo, size_t len);
 int32_t MsptiApiReporterCallbackImpl(uint32_t agingFlag, const MsprofApi* const data);
@@ -255,8 +241,6 @@ int32_t MsptiEventReporterCallbackImpl(uint32_t agingFlag, const MsprofEvent* co
 int32_t MsptiCompactInfoReporterCallbackImpl(uint32_t agingFlag, CONST_VOID_PTR data, uint32_t length);
 int32_t MsptiAddiInfoReporterCallbackImpl(uint32_t agingFlag, CONST_VOID_PTR data, uint32_t length);
 int32_t MsptiRegReportTypeInfoImpl(uint16_t level, uint32_t typeId, const char* name, size_t len);
-int32_t MsprofDeviceStateImpl(VOID_PTR deviceState, uint32_t len);
-}
 }
 }
 
