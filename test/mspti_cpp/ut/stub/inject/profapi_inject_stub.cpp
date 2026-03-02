@@ -20,6 +20,7 @@
 
 namespace Mspti {
 namespace Inject {
+
 int32_t MsprofRegisterProfileCallback(int32_t callbackType, VOID_PTR callback, uint32_t len)
 {
     UNUSED(callbackType);
@@ -47,6 +48,7 @@ int32_t profSetProfCommand(VOID_PTR command, uint32_t len)
     return MSPTI_SUCCESS;
 }
 
+namespace Detail {
 int32_t MsprofReporterCallbackImpl(uint32_t moduleId, uint32_t type, VOID_PTR data, uint32_t len)
 {
     UNUSED(moduleId);
@@ -107,6 +109,14 @@ int32_t MsptiRegReportTypeInfoImpl(uint16_t level, uint32_t typeId, const char* 
     UNUSED(name);
     UNUSED(len);
     return 0;
+}
+
+int32_t MsprofDeviceStateImpl(VOID_PTR deviceState, uint32_t len)
+{ 
+    UNUSED(deviceState);
+    UNUSED(len);
+    return MSPTI_SUCCESS;
+}
 }
 }
 }

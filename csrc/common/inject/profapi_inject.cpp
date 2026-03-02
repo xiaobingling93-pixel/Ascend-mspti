@@ -30,6 +30,7 @@
 #include "csrc/activity/ascend/parser/cann_hash_cache.h"
 #include "csrc/activity/ascend/parser/communication_calculator.h"
 #include "csrc/activity/ascend/channel/stars_common.h"
+#include "csrc/activity/activity_manager.h"
 
 namespace Mspti {
 namespace Inject {
@@ -43,6 +44,7 @@ public:
         Mspti::Common::RegisterFunction("libprofapi", "profRegCtrlCallback");
         Mspti::Common::RegisterFunction("libprofapi", "MsprofGetHashId");
         Mspti::Common::RegisterFunction("libprofapi", "MsprofRegTypeInfo");
+        Mspti::Common::RegisterFunction("libprofapi", "profRegDeviceStateCallback");
         auto ctrlHandle = [](uint32_t type, VOID_PTR data, uint32_t len) -> int32_t {
             UNUSED(type);
             UNUSED(data);
@@ -89,6 +91,17 @@ int32_t profRegCtrlCallback(MsprofCtrlHandle handle)
     return func(handle);
 }
 
+int32_t profRegDeviceStateCallback(ProfSetDeviceHandle handle)
+{
+    using profRegDeviceStateCallbackFunc = std::function<decltype(profRegDeviceStateCallback)>;
+    static profRegDeviceStateCallbackFunc func = nullptr;
+    if (func == nullptr) {
+        Mspti::Common::GetFunction("libprofapi", __FUNCTION__, func);
+    }
+    THROW_FUNC_NOTFOUND(func, __FUNCTION__, "libprofapi.so");
+    return func(handle);
+}
+
 int32_t profSetProfCommand(VOID_PTR command, uint32_t len)
 {
     using profSetProfCommandFunc = std::function<decltype(profSetProfCommand)>;
@@ -100,6 +113,7 @@ int32_t profSetProfCommand(VOID_PTR command, uint32_t len)
     return func(command, len);
 }
 
+namespace Detail {
 int32_t MsprofReporterCallbackImpl(uint32_t moduleId, uint32_t type, VOID_PTR data, uint32_t len)
 {
     UNUSED(moduleId);
@@ -237,5 +251,21 @@ int32_t MsptiRegReportTypeInfoImpl(uint16_t level, uint32_t typeId, const char* 
     Mspti::Parser::CannHashCache::RegTypeHashInfo(level, typeId, std::string(name, len));
     return PROFAPI_ERROR_NONE;
 }
+
+int32_t MsprofDeviceStateImpl(VOID_PTR deviceState, uint32_t len)
+{ 
+    if (deviceState == nullptr || len != sizeof(ProfSetDevPara)) {
+        MSPTI_LOGE("Device state callback receive invalid data.");
+        return PROFAPI_ERROR;
+    }
+    ProfSetDevPara* devPara = reinterpret_cast<ProfSetDevPara*>(deviceState);
+    MSPTI_LOGI("Receive device state callback, chipId: %u, devId: %u, isOpen: %d.",
+        devPara->chipId, devPara->devId, devPara->isOpen);
+    if (devPara->isOpen) {
+        Mspti::Activity::ActivityManager::GetInstance()->SetDevice(devPara->devId);
+    }
+    return MSPTI_SUCCESS;
 }
-}
+} // namespace Detail
+} // namespace Inject
+} // namespace Mspti
