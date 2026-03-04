@@ -40,18 +40,9 @@ public:
     {
         Mspti::Common::RegisterFunction("libprofapi", "MsprofRegisterProfileCallback");
         Mspti::Common::RegisterFunction("libprofapi", "profSetProfCommand");
-        Mspti::Common::RegisterFunction("libprofapi", "profRegReporterCallback");
-        Mspti::Common::RegisterFunction("libprofapi", "profRegCtrlCallback");
         Mspti::Common::RegisterFunction("libprofapi", "MsprofGetHashId");
         Mspti::Common::RegisterFunction("libprofapi", "MsprofRegTypeInfo");
         Mspti::Common::RegisterFunction("libprofapi", "profRegDeviceStateCallback");
-        auto ctrlHandle = [](uint32_t type, VOID_PTR data, uint32_t len) -> int32_t {
-            UNUSED(type);
-            UNUSED(data);
-            UNUSED(len);
-            return MSPTI_SUCCESS;
-        };
-        Mspti::Inject::profRegCtrlCallback(ctrlHandle);
     }
     ~ProfApiInject() = default;
 };
@@ -67,28 +58,6 @@ int32_t MsprofRegisterProfileCallback(int32_t callbackType, VOID_PTR callback, u
     }
     THROW_FUNC_NOTFOUND(func, __FUNCTION__, "libprofapi.so");
     return func(callbackType, callback, len);
-}
-
-int32_t profRegReporterCallback(ProfReportHandle reporter)
-{
-    using profRegReporterCallbackFunc = std::function<decltype(profRegReporterCallback)>;
-    static profRegReporterCallbackFunc func = nullptr;
-    if (func == nullptr) {
-        Mspti::Common::GetFunction("libprofapi", __FUNCTION__, func);
-    }
-    THROW_FUNC_NOTFOUND(func, __FUNCTION__, "libprofapi.so");
-    return func(reporter);
-}
-
-int32_t profRegCtrlCallback(MsprofCtrlHandle handle)
-{
-    using profRegCtrlCallbackFunc = std::function<decltype(profRegCtrlCallback)>;
-    static profRegCtrlCallbackFunc func = nullptr;
-    if (func == nullptr) {
-        Mspti::Common::GetFunction("libprofapi", __FUNCTION__, func);
-    }
-    THROW_FUNC_NOTFOUND(func, __FUNCTION__, "libprofapi.so");
-    return func(handle);
 }
 
 int32_t profRegDeviceStateCallback(ProfSetDeviceHandle handle)

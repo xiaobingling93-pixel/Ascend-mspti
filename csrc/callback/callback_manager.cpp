@@ -128,6 +128,7 @@ msptiResult CallbackManager::UnInit(msptiSubscriberHandle subscriber)
     }
     init_.store(false);
     Mspti::Common::ContextManager::GetInstance()->StopSyncTime();
+    Mspti::Ascend::DevTaskManager::GetInstance()->UnRegisterReportCallback();
     Mspti::Ascend::Channel::ChannelPoolManager::GetInstance()->UnInit();
     MSPTI_LOGI("CallbackManager UnInit success.");
     return MSPTI_SUCCESS;

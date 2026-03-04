@@ -234,11 +234,9 @@ enum ProfApiErrorCode {
 
 // 老的数据上报方式，待Lite-Profiling废弃后删除
 using ProfReportHandle = int32_t (*)(uint32_t moduleId, uint32_t type, VOID_PTR data, uint32_t len);
-int32_t profRegReporterCallback(ProfReportHandle reporter);
 
 // 使能接口
 using MsprofCtrlHandle = int32_t (*)(uint32_t type, VOID_PTR data, uint32_t len);
-int32_t profRegCtrlCallback(MsprofCtrlHandle handle);
 int32_t profSetProfCommand(VOID_PTR command, uint32_t len);
 using ProfSetDeviceHandle = int32_t (*)(VOID_PTR deviceState, uint32_t len);
 int32_t profRegDeviceStateCallback(ProfSetDeviceHandle handle);

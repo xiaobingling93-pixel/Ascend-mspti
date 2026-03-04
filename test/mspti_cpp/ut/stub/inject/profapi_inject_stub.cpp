@@ -29,18 +29,6 @@ int32_t MsprofRegisterProfileCallback(int32_t callbackType, VOID_PTR callback, u
     return MSPTI_SUCCESS;
 }
 
-int32_t profRegReporterCallback(ProfReportHandle reporter)
-{
-    UNUSED(reporter);
-    return MSPTI_SUCCESS;
-}
-
-int32_t profRegCtrlCallback(MsprofCtrlHandle handle)
-{
-    UNUSED(handle);
-    return MSPTI_SUCCESS;
-}
-
 int32_t profSetProfCommand(VOID_PTR command, uint32_t len)
 {
     UNUSED(command);
