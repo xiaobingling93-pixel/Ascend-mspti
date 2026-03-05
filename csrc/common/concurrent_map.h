@@ -20,6 +20,7 @@
 
 #include <unordered_map>
 #include <mutex>
+#include <stdexcept>
 
 namespace Mspti {
 namespace Common {
