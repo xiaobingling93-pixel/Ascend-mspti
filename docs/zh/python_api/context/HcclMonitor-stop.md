@@ -40,7 +40,6 @@
 </tbody>
 </table>
 
-
 ## 函数功能<a name="section463019538153"></a>
 
 标识通信算子性能数据采集的结束。
@@ -58,4 +57,3 @@ def stop(self) -> MsptiResult:
 ## 返回值说明<a name="section776014535188"></a>
 
 返回MsptiResult.MSPTI\_SUCCESS表示成功；返回MsptiResult.MSPTI\_ERROR\_INVALID\_PARAMETER表示失败。
-

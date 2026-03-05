@@ -77,4 +77,3 @@ def set_buffer_size(cls, size: int) -> MsptiResult:
 ## 返回值说明<a name="section776014535188"></a>
 
 返回MsptiResult.MSPTI\_SUCCESS表示设置成功；返回MsptiResult.MSPTI\_ERROR\_INVALID\_PARAMETER，则表示参数设置不正确，设置失败。
-

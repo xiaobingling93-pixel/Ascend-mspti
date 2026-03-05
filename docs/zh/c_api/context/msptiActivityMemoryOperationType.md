@@ -6,8 +6,7 @@ msptiActivityMemoryOperationType为[msptiActivityMemory](msptiActivityMemory.md)
 
 ```cpp
 typedef enum {
-	MSPTI_ACTIVITY_MEMORY_OPERATION_TYPE_ALLOCATION = 0,    // 分配内存
-	MSPTI_ACTIVITY_MEMORY_OPERATION_TYPE_RELEASE = 1    // 释放内存
+    MSPTI_ACTIVITY_MEMORY_OPERATION_TYPE_ALLOCATION = 0,    // 分配内存
+    MSPTI_ACTIVITY_MEMORY_OPERATION_TYPE_RELEASE = 1    // 释放内存
 } msptiActivityMemoryOperationType;
 ```
-

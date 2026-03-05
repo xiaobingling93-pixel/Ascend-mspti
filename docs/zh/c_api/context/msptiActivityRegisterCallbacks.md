@@ -6,6 +6,7 @@
 >昇腾产品的具体型号，请参见《[昇腾产品形态说明](https://www.hiascend.com/document/detail/zh/AscendFAQ/ProduTech/productform/hardwaredesc_0001.html)》。
 
 <a name="table38301303189"></a>
+
 <table><thead align="left"><tr id="row20831180131817"><th class="cellrowborder" valign="top" width="57.99999999999999%" id="mcps1.1.3.1.1"><p id="p1883113061818"><a name="p1883113061818"></a><a name="p1883113061818"></a><span id="ph20833205312295"><a name="ph20833205312295"></a><a name="ph20833205312295"></a>产品类型</span></p>
 </th>
 <th class="cellrowborder" align="center" valign="top" width="42%" id="mcps1.1.3.1.2"><p id="p783113012187"><a name="p783113012187"></a><a name="p783113012187"></a>是否支持</p>
@@ -39,7 +40,6 @@
 </tr>
 </tbody>
 </table>
-
 
 ## 功能说明<a name="section20806203412478"></a>
 
@@ -84,4 +84,3 @@ msptiResult msptiActivityRegisterCallbacks(msptiBuffersCallbackRequestFunc funcB
 ## 返回值说明<a name="section16621124213476"></a>
 
 返回MSPTI\_SUCCESS表示成功；funcBufferRequested或funcBufferCompleted为NULL时返回MSPTI\_ERROR\_INVALID\_PARAMETER，表示失败。
-

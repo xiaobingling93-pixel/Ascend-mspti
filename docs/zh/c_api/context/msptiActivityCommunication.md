@@ -19,4 +19,3 @@ typedef struct PACKED_ALIGNMENT {
     uint64_t correlationId;   // 通信算子执行时生成的唯一ID，其他Activity可通过该值与通信算子进行关联
 } msptiActivityCommunication;
 ```
-

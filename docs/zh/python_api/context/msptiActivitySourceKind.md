@@ -6,7 +6,6 @@ msptiActivitySourceKind为[MarkerData](MarkerData.md)结构体内调用的枚举
 
 ```python
 class MsptiActivitySourceKind(Enum):
-	MSPTI_ACTIVITY_SOURCE_KIND_HOST = 0   # 标记数据的来源是Host
-	MSPTI_ACTIVITY_SOURCE_KIND_DEVICE = 1   # 标记数据的来源是Device
+    MSPTI_ACTIVITY_SOURCE_KIND_HOST = 0   # 标记数据的来源是Host
+    MSPTI_ACTIVITY_SOURCE_KIND_DEVICE = 1   # 标记数据的来源是Device
 ```
-

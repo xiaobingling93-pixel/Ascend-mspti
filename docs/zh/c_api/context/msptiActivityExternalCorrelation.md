@@ -4,10 +4,9 @@ msptiActivityExternalCorrelation为Activity Record类型[MSPTI\_ACTIVITY\_KIND\_
 
 ```cpp
 typedef struct {
-	msptiActivityKind kind;   // Activity Record类型MSPTI_ACTIVITY_KIND_EXTERNAL_CORRELATION
-	msptiExternalCorrelationKind externalKind;   // 记录关联的外部API的类型
-	uint64_t externalId;   // 关联外部API的关联ID
-	uint64_t correlationId;   // 关联CANN API的关联ID
+    msptiActivityKind kind;   // Activity Record类型MSPTI_ACTIVITY_KIND_EXTERNAL_CORRELATION
+    msptiExternalCorrelationKind externalKind;   // 记录关联的外部API的类型
+    uint64_t externalId;   // 关联外部API的关联ID
+    uint64_t correlationId;   // 关联CANN API的关联ID
 } msptiActivityExternalCorrelation;
 ```
-

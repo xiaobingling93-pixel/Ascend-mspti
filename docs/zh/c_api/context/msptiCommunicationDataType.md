@@ -22,4 +22,3 @@ typedef enum {
     MSPTI_ACTIVITY_COMMUNICATION_INVALID_TYPE = 0x0000FFFF
 } msptiCommunicationDataType;
 ```
-

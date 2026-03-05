@@ -40,7 +40,6 @@
 </tbody>
 </table>
 
-
 ## 功能说明<a name="section20806203412478"></a>
 
 为特定domain和CallbackId的订阅者开启或关闭回调。
@@ -100,4 +99,3 @@ msptiResult msptiEnableCallback(uint32_t enable, msptiSubscriberHandle subscribe
 ## 返回值说明<a name="section16621124213476"></a>
 
 返回MSPTI\_SUCCESS表示成功；用户、域或\* cbid无效时返回MSPTI\_ERROR\_INVALID\_PARAMETER，表示失败。
-

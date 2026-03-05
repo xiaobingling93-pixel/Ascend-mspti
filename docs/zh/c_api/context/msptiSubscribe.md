@@ -40,7 +40,6 @@
 </tbody>
 </table>
 
-
 ## 功能说明<a name="section20806203412478"></a>
 
 通过该接口向MSPTI注册回调函数。用户（订阅者）在调用MSPTI接口前，需要预先调用该接口，同一时刻只支持一个订阅者。
@@ -91,4 +90,3 @@ msptiResult msptiSubscribe(msptiSubscriberHandle *subscriber, msptiCallbackFunc 
 ## 返回值说明<a name="section16621124213476"></a>
 
 返回MSPTI\_SUCCESS表示成功；无法初始化MSPTI时返回MSPTI\_ERROR\_INNER、已存在MSPTI用户时返回MSPTI\_ERROR\_MULTIPLE\_SUBSCRIBERS\_NOT\_SUPPORTED或如果用户为空时返回MSPTI\_ERROR\_INVALID\_PARAMETER，表示失败。
-

@@ -6,8 +6,7 @@ msptiActivityMemoryKind为[msptiActivityMemory](msptiActivityMemory.md)调用的
 
 ```cpp
 typedef enum {
-	MSPTI_ACTIVITY_MEMORY_UNKNOWN = 0,    // 内部预留，未定义
-	MSPTI_ACTIVITY_MEMORY_DEVICE = 1,    // 设备内存
+    MSPTI_ACTIVITY_MEMORY_UNKNOWN = 0,    // 内部预留，未定义
+    MSPTI_ACTIVITY_MEMORY_DEVICE = 1,    // 设备内存
 } msptiActivityMemoryKind;
 ```
-

@@ -40,7 +40,6 @@
 </tbody>
 </table>
 
-
 ## 功能说明<a name="section20806203412478"></a>
 
 为特定domain的订阅者开启或关闭所有回调。
@@ -93,4 +92,3 @@ msptiResult msptiEnableDomain(uint32_t enable, msptiSubscriberHandle subscriber,
 ## 返回值说明<a name="section16621124213476"></a>
 
 返回MSPTI\_SUCCESS表示成功；用户或域无效时返回MSPTI\_ERROR\_INVALID\_PARAMETER，表示失败。
-

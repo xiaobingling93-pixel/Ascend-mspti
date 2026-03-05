@@ -40,7 +40,6 @@
 </tbody>
 </table>
 
-
 ## 函数功能<a name="section463019538153"></a>
 
 标识Kernel性能数据采集的开始。
@@ -72,8 +71,6 @@ def start(self, cb: Callable[[KernelData], None]) -> MsptiResult:
 </tbody>
 </table>
 
-
 ## 返回值说明<a name="section776014535188"></a>
 
 返回MsptiResult.MSPTI\_SUCCESS则表示成功；返回MsptiResult.MSPTI\_ERROR\_INVALID\_PARAMETER，则表示回调函数类型不正确，操作失败。
-

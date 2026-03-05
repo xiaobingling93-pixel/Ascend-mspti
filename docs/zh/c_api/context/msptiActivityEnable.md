@@ -78,4 +78,3 @@ msptiResult msptiActivityEnable(msptiActivityKind kind)
 ## 返回值说明<a name="section16621124213476"></a>
 
 返回MSPTI\_SUCCESS表示成功，返回其他值表示失败。
-

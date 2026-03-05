@@ -41,5 +41,3 @@ msPTI API的功能介绍和使用示例请参见[msPTI工具](../README.md)。
 |[msptiActivityKind](./context/msptiActivityKind.md)|MSPTI支持的所有Activity类型。|
 |[msptiActivityFlag](./context/msptiActivityFlag.md)|Activity Record的活动标记。|
 |[msptiActivitySourceKind](./context/msptiActivitySourceKind.md)|标记Activity数据来源。|
-
-

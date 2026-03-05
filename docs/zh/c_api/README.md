@@ -57,7 +57,6 @@ $\{INSTALL\_DIR\}请替换为CANN Toolkit开发套件包安装后文件存储路
 |**Union类型**|**Union说明**|
 |[msptiObjectId](./context/msptiObjectId.md)|用于识别Marker的进程ID、线程ID、Device ID、Stream ID。|
 
-
 Activity Record：NPU的Profiling记录，使用结构体表示，如msptiActivityApi、msptiActivityMarker等。
 
 Activity Buffer：用于缓存Activity Record数据，并将一个或多个Activity Record从MSPTI传输到客户端。用户根据业务需要提供空的Activity Buffer缓冲区，以确保Activity Record不会被遗漏。
@@ -83,12 +82,9 @@ Activity Buffer：用于缓存Activity Record数据，并将一个或多个Activ
 |**Data Structure类型**|**Data Structure说明**|
 |[msptiCallbackData](./context/msptiCallbackData.md)|用于指定传递到回调函数的数据。|
 
-
 **表 3**  Result Codes
 
 |接口|说明|
 |--|--|
 |**Enumeration类型**|**Enumeration说明**|
 |[msptiResult](./context/msptiResult.md)|MSPTI返回的错误和结果代码。|
-
-

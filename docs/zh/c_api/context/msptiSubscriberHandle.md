@@ -53,4 +53,3 @@ typedef struct msptiSubscriber_st *msptiSubscriberHandle
 ## 返回值说明<a name="section16621124213476"></a>
 
 无
-

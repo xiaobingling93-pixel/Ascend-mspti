@@ -78,4 +78,3 @@ msptiResult msptiActivityFlushAll(uint32_t flag)
 ## 返回值说明<a name="section16621124213476"></a>
 
 返回MSPTI\_SUCCESS表示成功，MSPTI未被初始化时返回MSPTI\_ERROR\_NOT\_INITIALIZED，表示失败。
-

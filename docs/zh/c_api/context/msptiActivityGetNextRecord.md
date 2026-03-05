@@ -90,4 +90,3 @@ msptiResult msptiActivityGetNextRecord(uint8_t *buffer, size_t validBufferSizeBy
 ## 返回值说明<a name="section16621124213476"></a>
 
 返回MSPTI\_SUCCESS表示成功；Activity Buffer没有更多的Record数据时返回MSPTI\_ERROR\_MAX\_LIMIT\_REACHED（表示已取完Activity Buffer中数据），表示失败；Activity Buffer为空时返回MSPTI\_ERROR\_INVALID\_PARAMETER，表示失败。
-

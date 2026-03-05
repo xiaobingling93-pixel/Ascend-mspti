@@ -6,7 +6,6 @@ msptiActivity为Activity Record的基础结构体，Activity API使用msptiActiv
 
 ```cpp
 typedef struct PACKED_ALIGNMENT {
-	msptiActivityKind kind;   // Activity类型
+    msptiActivityKind kind;   // Activity类型
 } msptiActivity;
 ```
-

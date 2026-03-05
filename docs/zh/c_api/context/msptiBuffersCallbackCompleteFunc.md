@@ -90,4 +90,3 @@ typedef void(*msptiBuffersCallbackCompleteFunc)(uint8_t *buffer, size_t size, si
 ## 返回值说明<a name="section16621124213476"></a>
 
 无
-

@@ -1,6 +1,7 @@
 # msPTI工具
 
 ## 简介
+
 本文通过提供msPTI样例集的方式，供用户理解使用msPTI工具。
 
 ## 产品支持情况
@@ -40,7 +41,7 @@ msPTI工具不可与任何其他性能数据采集工具同时使用，否则会
 1. 安装CANN软件后，需要以CANN运行用户登录环境，执行`source /${install_path}/set_env.sh`命令设置环境变量。其中`${install_path}`为CANN软件安装后文件存储路径，例如：/usr/local/Ascend/cann。
    示例如下：
 
-   ```
+   ```bash
    source /usr/local/Ascend/cann/set_env.sh
    ```
 
@@ -52,13 +53,13 @@ msPTI工具不可与任何其他性能数据采集工具同时使用，否则会
 
    示例如下：
 
-   ```
+   ```bash
    cd ${install_path}/tools/mspti/samples/callback_domain
    ```
 
 3. 执行对应样例目录下的sample\_run.sh。
 
-   ```
+   ```bash
    bash sample_run.sh
    ```
 
@@ -87,4 +88,3 @@ msPTI工具不可与任何其他性能数据采集工具同时使用，否则会
   | -------------------------------------------------------- | ------------------------------------------------------------ | --------------------------- |
   | [python_monitor](../../samples/python_monitor)           | 1.展示Monitor基本使用方式，通过KernelMonitor、HcclMonitor获取计算算子和通信算子的耗时。 | Atlas A2 训练系列产品/Atlas A2 推理系列产品<br/>Atlas A3 训练系列产品/Atlas A3 推理系列产品 |
   | [python_mstx_monitor](../../samples/python_mstx_monitor) | 1. 展示MstxMonitor基本使用方式，用户可以通过Mstx打点采集对应算子（如matmul）耗时。 | Atlas A2 训练系列产品/Atlas A2 推理系列产品<br/>Atlas A3 训练系列产品/Atlas A3 推理系列产品 |
-

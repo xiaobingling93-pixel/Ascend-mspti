@@ -40,7 +40,6 @@
 </tbody>
 </table>
 
-
 ## 功能说明<a name="section20806203412478"></a>
 
 为调用线程拉取外部关联ID。
@@ -84,4 +83,3 @@ msptiResult msptiActivityPopExternalCorrelationId(msptiExternalCorrelationKind k
 ## 返回值说明<a name="section16621124213476"></a>
 
 返回MSPTI\_SUCCESS表示成功；外部关联类型无效时返回MSPTI\_ERROR\_INVALID\_PARAMETER，表示失败。
-

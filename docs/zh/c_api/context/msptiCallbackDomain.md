@@ -6,11 +6,10 @@ msptiCallbackDomain为[msptiEnableCallback](msptiEnableCallback.md)、[msptiEnab
 
 ```cpp
 typedef enum {
-	MSPTI_CB_DOMAIN_INVALID = 0,    // 非法值
-	MSPTI_CB_DOMAIN_RUNTIME = 1,    // Runtime API相关回调点
-	MSPTI_CB_DOMAIN_HCCL = 2,    // 通信API相关回调点
-	MSPTI_CB_DOMAIN_SIZE,
-	MSPTI_CB_DOMAIN_FORCE_INT = 0x7fffffff
+    MSPTI_CB_DOMAIN_INVALID = 0,    // 非法值
+    MSPTI_CB_DOMAIN_RUNTIME = 1,    // Runtime API相关回调点
+    MSPTI_CB_DOMAIN_HCCL = 2,    // 通信API相关回调点
+    MSPTI_CB_DOMAIN_SIZE,
+    MSPTI_CB_DOMAIN_FORCE_INT = 0x7fffffff
 } msptiCallbackDomain;
 ```
-

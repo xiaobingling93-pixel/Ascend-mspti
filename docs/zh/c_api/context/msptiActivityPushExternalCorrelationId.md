@@ -40,7 +40,6 @@
 </tbody>
 </table>
 
-
 ## 功能说明<a name="section20806203412478"></a>
 
 此函数为当前线程创建push-pop调用栈。如果启用了[MSPTI\_ACTIVITY\_KIND\_EXTERNAL\_CORRELATION](msptiActivityKind.md)功能，在push-pop栈内创建[msptiActivityAPI](msptiActivityApi.md)时，会为每一种[msptiExternalCorrelationKind](msptiExternalCorrelationKind.md)创建一个与[msptiActivityAPI](msptiActivityApi.md)记录对应的[msptiActivityExternalCorrelation](msptiActivityExternalCorrelation.md)。
@@ -84,4 +83,3 @@ msptiResult msptiActivityPushExternalCorrelationId(msptiExternalCorrelationKind 
 ## 返回值说明<a name="section16621124213476"></a>
 
 返回MSPTI\_SUCCESS表示成功；外部关联类型无效时返回MSPTI\_ERROR\_INVALID\_PARAMETER和外部关联ID栈空时出栈返回MSPTI\_ERROR\_QUEUE\_EMPTY，表示失败。
-

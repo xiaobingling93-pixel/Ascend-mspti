@@ -40,7 +40,6 @@
 </tbody>
 </table>
 
-
 ## 函数功能<a name="section463019538153"></a>
 
 用户（订阅者）调用回调函数，将缓冲区中的所有Activity数据（包括通信、Kernel和mstx数据）写入用户内存。
@@ -58,4 +57,3 @@ def flush_all(cls) -> MsptiResult:
 ## 返回值说明<a name="section776014535188"></a>
 
 无
-

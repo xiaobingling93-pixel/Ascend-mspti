@@ -40,7 +40,6 @@
 </tbody>
 </table>
 
-
 ## 函数功能<a name="section463019538153"></a>
 
 标识数据采集mstx打点的开始。
@@ -82,4 +81,3 @@ def start(self, mark_cb : Callable[[MarkerData], None] = empty_callback, range_c
 ## 返回值说明<a name="section776014535188"></a>
 
 返回MsptiResult.MSPTI\_SUCCESS，则表示成功；返回MsptiResult.MSPTI\_ERROR\_INVALID\_PARAMETER，则表示回调函数类型不正确，操作失败。
-
