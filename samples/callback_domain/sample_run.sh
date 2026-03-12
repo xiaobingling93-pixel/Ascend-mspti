@@ -9,6 +9,7 @@ else
   echo "ASCEND_HOME_PATH is set to: $ASCEND_HOME_PATH"
 fi
 
+rm -rf ./bin
 mkdir ./bin
 cd bin
 cmake ..

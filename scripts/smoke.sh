@@ -15,7 +15,6 @@
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
 # -------------------------------------------------------------------------
-
 LEVEL_ERROR="ERROR"
 LEVEL_WARN="WARNING"
 LEVEL_INFO="INFO"
@@ -41,37 +40,25 @@ Description:
   Used for executing smoke testing, supporting specification of CANN path, conda environment, smoke test type, etc.
 
 Options:
-  --cann-path=<path>        Specify the installation path of CANN (default: root: /usr/local/Ascend, non-root: ${HOME}/Ascend)
-  --conda-path=<path>       Specify the installation path of conda (default: root: /root/miniconda3, non-root: ${HOME}/miniconda3)
-  --conda-env=<env-name>    Specify the name of the conda environment to activate (default: )
+  --cann-path=<path>        Specify the installation path of CANN
+  --conda-path=<path>       Specify the installation path of conda
+  --conda-env=<env-name>    Specify the name of the conda environment to activate
   --smoke-level=<level>     Specify the type of smoke test (default: l0)
                               all - Execute all scripts containing "test"
                               l1 - Execute scripts containing "l1_test"
                               l0 - Execute scripts containing "l0_test"
-  --output=<path>           Specify the output path for test data (default: root: /home/result_dir, non-root: ${HOME}/result_dir)
+  --output=<path>           Specify the output path for test data
   --case=<case1,case2>      Specify the name of the test case to execute
   --help | -h               Show this help message
 
 Examples:
-  bash smoke.sh --cann-path=/usr/local/Ascend --conda-path=/root/miniconda3 --conda-env=smoke_test_env --smoke-type=all --output=/home/result_dir
+  bash smoke.sh --cann-path=/usr/local/Ascend --conda-path=/home/presmoke/miniconda3 --conda-env=smoke_profiler --smoke-level=l0 --output=/home/presmoke/mspti_result_dir
 EOF
 }
 
-
 function print() {
-    echo "[${MSPTI_SMOKE}] [$(date +"%Y-%m-%d %H:%M:%S")] [$1]: $2"
-}
-
-function set_default_path() {
-    if [ "$UID" = "0" ]; then
-        cann_path="/usr/local/Ascend"
-        output="/home/result_dir"
-        model_path="/home/mspti_model"
-    else
-        cann_path="${HOME}/Ascend"
-        output="${HOME}/result_dir"
-        model_path="${HOME}/mspti_model"
-    fi
+    local line_no=${BASH_LINENO[0]}
+    echo "[${MSPTI_SMOKE}] [$(date +"%Y-%m-%d %H:%M:%S")] [$line_no] [$1]: $2"
 }
 
 function parse_script_args() {
@@ -166,7 +153,7 @@ function run_smoke() {
         exit 1
     fi
 
-    print $LEVEL_INFO "========================================================"
+    print $LEVEL_INFO "======================SUMMARY==========================="
     if [ ${#success_list[@]} -gt 0 ]; then
         print $LEVEL_INFO "Number of successfully executed scripts: ${#success_list[@]}"
         print $LEVEL_INFO "Success list:"
@@ -195,7 +182,29 @@ function init_env() {
     if ! conda activate "${conda_env}"; then
         print $LEVEL_ERROR "Failed to activate conda environment '${conda_env}'"
     fi
+}
 
+function install_mspti() {
+    bash ${CUR_DIR}/build.sh
+    if [ $? -ne 0 ]; then
+        print $LEVEL_ERROR "Failed to build mspti"
+        exit 1
+    fi
+    cd ${TOP_DIR}/output
+    RUN_FILE=$(ls -1 mindstudio-profiler-tools-interface*.run 2>/dev/null | head -n 1)
+    if [ -z "$RUN_FILE" ]; then
+        print $LEVEL_ERROR "Can't find mspti run package"
+        exit 1
+    fi
+
+    bash $RUN_FILE --install --install-path=${cann_path}/cann
+    if [ $? -ne 0 ]; then
+        print $LEVEL_ERROR "Failed to install mspti"
+        exit 1
+    fi
+}
+
+function set_env() {
     if ! source "${cann_path}/cann/set_env.sh"; then
         print $LEVEL_ERROR "Failed to source set_env.sh"
         exit 1
@@ -205,9 +214,10 @@ function init_env() {
     export MODEL_PATH=${model_path}
 }
 
-set_default_path
 parse_script_args $*
 init_env
+install_mspti
+set_env
 
 run_smoke
 

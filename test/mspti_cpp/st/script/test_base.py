@@ -59,8 +59,8 @@ class TestProfiling(unittest.TestCase):
     def write_res(self):
         if self.res != 0:
             self.__result = self.cfg_value.fail_res
-        self.logger.info("\n------------------------------- "
-                         "End execute case {} -------------------------------".format(self.id))
+        self.logger.info("------------------------------- "
+                         "End execute case {} ---------------------------------".format(self.id))
         with open('result.txt', 'a+') as f:
             f.write('%s %s %s\n' % (self.id, self.__result, self.duration_time))
 

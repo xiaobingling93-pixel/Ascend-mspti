@@ -137,12 +137,11 @@ void SetUpMspti()
 
 int main()
 {
-    SetUpMspti();
-
     int32_t deviceId = 0;
     aclrtContext context;
     aclrtStream stream;
     Init(deviceId, &context, &stream);
+    SetUpMspti();
     DoAclAdd(context, stream);
     DeInit(deviceId, &context, &stream);
 

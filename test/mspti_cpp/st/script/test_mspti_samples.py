@@ -211,7 +211,7 @@ class MsptiHcclActivityTest(test_base.TestProfiling):
             check_time(hccl_msg)
 
 
-class         MsptiMstxActivityDomainTest(test_base.TestProfiling):
+class MsptiMstxActivityDomainTest(test_base.TestProfiling):
     def getTestCmd(self, scene=None):
         script_path = os.path.join(self.cfg_path.mspti_sample_path, "mspti_mstx_activity_domain")
         self.msprofbin_cmd += f"cd {script_path}; bash sample_run.sh > {self.slog_stdout} 2>&1"
@@ -289,7 +289,7 @@ class PythonMstxMonitorTest(test_base.TestProfiling):
 
 if __name__ == '__main__':
     suite = unittest.TestSuite()
-    timeout = 480
+    timeout = 120
     suite.addTest(
         MsptiCorrelationTest("test_mspti_correlation", "sample", "", "", timeout=timeout))
     suite.addTest(
@@ -298,10 +298,16 @@ if __name__ == '__main__':
         MsptiHcclActivityTest("test_hccl_mspti_correlation", "sample", "", "", timeout=timeout))
     suite.addTest(
         MsptiExternalCorrelationTest("test_mspti_external_correlation", "sample", "", "", timeout=timeout))
+    # suite.addTest(
+    #     MsptiMstxActivityDomainTest("test_mspti_mstx_activity_domain", "sample", "", "", timeout=timeout))
+    suite.addTest(
+        CallbackMstxTest("test_mspti_callback", "sample", "", "", timeout=timeout))
     suite.addTest(
         CallbackDomainTest("test_mspti_callback_domain", "sample", "", "", timeout=timeout))
     suite.addTest(
         PythonMonitorTest("test_python_monitor", "sample", "", "", timeout=timeout))
+    # suite.addTest(
+    #     PythonMstxMonitorTest("test_python_mstx_monitor", "sample", "", "", timeout=timeout))
     runner = unittest.TextTestRunner(verbosity=2)
     test_result = runner.run(suite)
     if not test_result.wasSuccessful():
