@@ -59,6 +59,12 @@ public:
                         activityPool(1000), deviceTaskPool(1000) {
         hostTasks_.reserve(1000);   // 防频繁扩容, 具体值商榷
     };
+    ~KernelParserImpl() {
+        for (auto& item : kernel_map_) {
+            auto& kernelList = item.second;
+            MSPTI_LOGW("Release kernel: deviceId:%u, streamId:%u, taskId:%u, kernelCount:%lu", std::get<0>(item.first), std::get<1>(item.first), std::get<2>(item.first), kernelList.size());
+        }
+    }
     msptiResult ReportRtTaskTrack(uint32_t agingFlag, const MsprofCompactInfo *data);
     // 驱动数据均为单线程读取，函数内数据无需额外加锁
     msptiResult ReportSocLog(uint32_t deviceId, const HalLogData& originData);

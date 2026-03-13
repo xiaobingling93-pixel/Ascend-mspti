@@ -52,6 +52,7 @@ private:
     uint32_t deviceId_;
     AI_DRV_CHANNEL channelId_;
     size_t hashId_{0};
+    uint64_t totalSize_{0};
 
     // status info
     volatile bool isInited_{false};

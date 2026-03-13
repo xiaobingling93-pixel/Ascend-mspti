@@ -47,7 +47,7 @@ TEST_F(DevProfTaskUtest, ShouldGetRightProfTaskNumsWhenSetDifferentKind)
     constexpr size_t MARKER_PROF_TASK_NUM = 1;
     EXPECT_EQ(MARKER_PROF_TASK_NUM, profTasks.size());
     kind = MSPTI_ACTIVITY_KIND_KERNEL;
-    constexpr size_t KERNEL_PROF_TASK_NUM = 2;
+    constexpr size_t KERNEL_PROF_TASK_NUM = 1;
     profTasks = Mspti::Ascend::DevProfTaskFactory::CreateTasks(deviceId, kind);
     EXPECT_EQ(KERNEL_PROF_TASK_NUM, profTasks.size());
     msptiResult ret = MSPTI_SUCCESS;

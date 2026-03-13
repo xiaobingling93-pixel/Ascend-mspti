@@ -127,6 +127,7 @@ msptiResult CallbackManager::UnInit(msptiSubscriberHandle subscriber)
         bitmap.store(0, std::memory_order_relaxed);
     }
     init_.store(false);
+    MsptiMstxApi::MsptiDisableMstxFunc();
     Mspti::Common::ContextManager::GetInstance()->StopSyncTime();
     Mspti::Ascend::DevTaskManager::GetInstance()->UnRegisterReportCallback();
     Mspti::Ascend::Channel::ChannelPoolManager::GetInstance()->UnInit();

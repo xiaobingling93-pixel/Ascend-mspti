@@ -129,6 +129,7 @@ namespace MsptiMstxApi {
 int InitInjectionMstx(MstxGetModuleFuncTableFunc getFuncTable);
 msptiResult MstxRegisterMstxFunc();
 void MsptiEnableMstxFunc();
+void MsptiDisableMstxFunc();
 }
 
 #endif

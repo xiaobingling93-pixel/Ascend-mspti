@@ -385,7 +385,7 @@ int GetModuleTableFunc(MstxGetModuleFuncTableFunc getFuncTable)
 
 msptiResult MstxRegisterMstxFunc()
 {
-    MSPTI_LOGI("mspti registerMstxFunc to profcommon.so");
+    MSPTI_LOGI("mspti registerMstxFunc to libprofapi.so");
     ProfRegisterMstxFunc(InitInjectionMstx, PROF_MODULE_MSPTI);
     return MSPTI_SUCCESS;
 }
@@ -394,6 +394,12 @@ void MsptiEnableMstxFunc()
 {
     MSPTI_LOGI("mspti enable mstxFuncs");
     ProfEnableMstxFunc(PROF_MODULE_MSPTI);
+}
+
+void MsptiDisableMstxFunc()
+{
+    MSPTI_LOGI("mspti disable mstxFuncs");
+    ProfEnableMstxFunc(PROF_MODULE_MSPROF);
 }
 
 int InitInjectionMstx(MstxGetModuleFuncTableFunc getFuncTable)

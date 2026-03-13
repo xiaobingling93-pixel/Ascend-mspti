@@ -52,6 +52,7 @@ msptiResult ChannelReader::Init()
 msptiResult ChannelReader::Uinit()
 {
     isInited_ = false;
+    MSPTI_LOGI("Uinit channel reader, deviceId=%u, channelId=%d, totalSize=%lu", deviceId_, channelId_, totalSize_);
     return MSPTI_SUCCESS;
 }
 
@@ -97,9 +98,11 @@ msptiResult ChannelReader::Execute()
         size_t last_pos = TransDataToActivityBuffer(buf, cur_pos + uint_currLen, deviceId_, channelId_);
         if (last_pos < cur_pos + uint_currLen) {
             if (memcpy_s(buf, MAX_BUFFER_SIZE, buf + last_pos, cur_pos + uint_currLen - last_pos) != EOK) {
+                MSPTI_LOGE("memcpy channel buff data failed, deviceId=%u, channelId=%d, totalSize=%lu", deviceId_, channelId_, totalSize_);
                 break;
             }
         }
+        totalSize_ += static_cast<uint64_t>(currLen);
         cur_pos = cur_pos + uint_currLen - last_pos;
     }
     return MSPTI_SUCCESS;
@@ -140,12 +143,13 @@ size_t ChannelReader::TransTsFwData(char buffer[], size_t valid_size, uint32_t d
 size_t ChannelReader::TransStarsLog(char buffer[], size_t valid_size, uint32_t deviceId)
 {
     size_t pos = 0;
-    while (valid_size - pos >= sizeof(StarsSocLog)) {
-        HalLogData logData;
+    HalLogData logData;
+    static size_t logStructSize = Convert::SocLogConvert::GetInstance().GetStructSize(deviceId, Common::ContextManager::GetInstance()->GetChipType(deviceId));
+    while (valid_size - pos >= logStructSize) {
         Convert::SocLogConvert::GetInstance().TransData(buffer, valid_size, deviceId, pos, logData);
         if (Mspti::Parser::DeviceTaskCalculator::GetInstance().ReportStarsSocLog(deviceId, logData) != MSPTI_SUCCESS) {
             MSPTI_LOGE("DeviceTaskCalculator parse SocLog failed");
-    }
+        }
         if (Mspti::Parser::KernelParser::GetInstance().ReportStarsSocLog(deviceId, logData) != MSPTI_SUCCESS) {
             MSPTI_LOGE("KernelParser parse SocLog failed");
         }
