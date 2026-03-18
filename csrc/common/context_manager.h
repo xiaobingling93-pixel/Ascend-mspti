@@ -35,6 +35,7 @@ struct DevTimeInfo {
     uint64_t freq{0};
     uint64_t startRealTime{0};
     uint64_t startSysCnt{0};
+    uint64_t startMonotonicRawNs{0};
 };
 
 enum class PlatformType {
@@ -58,6 +59,7 @@ public:
     bool GetHostTimeInfo(DevTimeInfo& devTimeInfo);
     bool GetCurDevTimeInfo(uint32_t deviceId, DevTimeInfo& devTimeInfo);
     static uint64_t CalculateRealTime(uint64_t sysCnt, const DevTimeInfo& devTimeInfo);
+    static uint64_t CalculateRealTimeWithMonotonicTime(uint64_t sysCnt, const DevTimeInfo &devTimeInfo);
     uint64_t GetRealTimeFromSysCnt(uint32_t deviceId, uint64_t sysCnt);
     std::vector<uint64_t> GetRealTimeFromSysCnt(uint32_t deviceId, const std::vector<uint64_t>& sysCnts);
     // Host

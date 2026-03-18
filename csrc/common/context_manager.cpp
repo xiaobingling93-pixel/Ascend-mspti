@@ -133,20 +133,23 @@ bool ContextManager::HostFreqIsEnable()
 void ContextManager::InitHostTimeInfo()
 {
     static constexpr uint32_t AVE_NUM = 2;
-    if (!HostFreqIsEnable()) {
-        return;
-    }
     std::unique_ptr<DevTimeInfo> curHostTimeInfo_;
     Mspti::Common::MsptiMakeUniquePtr(curHostTimeInfo_);
     if (!curHostTimeInfo_) {
+        MSPTI_LOGE("Failed to init hostTimeInfo_.");
         return;
     }
-    curHostTimeInfo_->freq = GetHostFreq();
-    auto t1 = Mspti::Common::Utils::GetClockRealTimeNs();
-    curHostTimeInfo_->startSysCnt = Mspti::Common::Utils::GetHostSysCnt();
-    auto t2 = Mspti::Common::Utils::GetClockRealTimeNs();
-    curHostTimeInfo_->startRealTime = (t2 + t1) / AVE_NUM;
-
+    if (!HostFreqIsEnable()) {
+        auto t1 = Mspti::Common::Utils::GetClockMonotonicRawNs();
+        auto t2 = Mspti::Common::Utils::GetClockMonotonicRawNs();
+        curHostTimeInfo_->startMonotonicRawNs = (t2 + t1) / AVE_NUM;
+    } else {
+        curHostTimeInfo_->freq = GetHostFreq();
+        auto t1 = Mspti::Common::Utils::GetClockRealTimeNs();
+        curHostTimeInfo_->startSysCnt = Mspti::Common::Utils::GetHostSysCnt();
+        auto t2 = Mspti::Common::Utils::GetClockRealTimeNs();
+        curHostTimeInfo_->startRealTime = (t2 + t1) / AVE_NUM;
+    }
     std::lock_guard<std::mutex> lk(hostTimeMtx_);
     hostTimeInfo_ = std::move(curHostTimeInfo_);
 }
@@ -193,10 +196,15 @@ uint64_t ContextManager::GetRealTimeFromSysCnt(uint64_t sysCnt)
         }
         hostTime = *hostTimeInfo_;
     }
-    if (hostTime.freq == 0) {
-        return sysCnt;
+    if (!HostFreqIsEnable() || hostTime.freq == 0) {
+        return CalculateRealTimeWithMonotonicTime(sysCnt, hostTime);
     }
     return CalculateRealTime(sysCnt, hostTime);
+}
+
+uint64_t ContextManager::CalculateRealTimeWithMonotonicTime(uint64_t sysCnt, const DevTimeInfo &devTimeInfo)
+{
+    return (sysCnt + devTimeInfo.startRealTime) - devTimeInfo.startMonotonicRawNs;
 }
 
 uint64_t ContextManager::CalculateRealTime(uint64_t sysCnt, const DevTimeInfo &devTimeInfo)
