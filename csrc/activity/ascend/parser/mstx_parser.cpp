@@ -199,7 +199,7 @@ msptiResult MstxParser::ReportRangeEnd(uint64_t rangeId)
         Common::ReinterpretConvert<msptiActivity*>(activity), sizeof(msptiActivityMarker));
 }
 
-void MstxParser::ReportMarkDataToActivity(uint32_t deviceId, const StepTrace* stepTrace)
+void MstxParser::ReportMarkDataToActivity(uint32_t deviceId, const StepTraceBasic* stepTrace)
 {
     if (!stepTrace) {
         return;

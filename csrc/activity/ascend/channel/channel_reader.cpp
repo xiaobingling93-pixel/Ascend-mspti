@@ -28,6 +28,7 @@
 #include "csrc/common/plog_manager.h"
 #include "csrc/common/utils.h"
 #include "csrc/activity/ascend/channel/soclog_convert.h"
+#include "csrc/activity/ascend/channel/tsfw_convert.h"
 #include "csrc/activity/ascend/parser/kernel_parser.h"
 #include "csrc/include/mspti_activity.h"
 #include "securec.h"
@@ -124,18 +125,20 @@ size_t ChannelReader::TransDataToActivityBuffer(char buffer[], size_t valid_size
 size_t ChannelReader::TransTsFwData(char buffer[], size_t valid_size, uint32_t deviceId)
 {
     size_t pos = 0;
-    constexpr uint32_t TS_TRACK_SIZE = 40;
-    while (valid_size - pos >= TS_TRACK_SIZE) {
+    static size_t logStructSize = Convert::TsfwConvert::GetInstance().GetStructSize(deviceId, Common::ContextManager::GetInstance()->GetChipType(deviceId));
+    while (valid_size - pos >= logStructSize) {
+        StepTraceBasic stepTrace;
         TsTrackHead* tsHead = reinterpret_cast<TsTrackHead*>(buffer + pos);
+        MSPTI_LOGD("ts track data type is %d", tsHead->rptType);
         switch (tsHead->rptType) {
             case RPT_TYPE_STEP_TRACE:
-                Mspti::Parser::ParserManager::GetInstance()->ReportStepTrace(deviceId,
-                    reinterpret_cast<StepTrace*>(buffer + pos));
+                Convert::TsfwConvert::GetInstance().TransData(buffer, valid_size, deviceId, pos, stepTrace);
+                Mspti::Parser::ParserManager::GetInstance()->ReportStepTrace(deviceId, &stepTrace);
                 break;
             default:
+                pos += logStructSize;
                 break;
         }
-        pos += TS_TRACK_SIZE;
     }
     return pos;
 }

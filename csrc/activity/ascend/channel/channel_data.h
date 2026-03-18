@@ -46,6 +46,17 @@ struct TsTrackHead {
     uint16_t bufSize;
 };
 
+struct StepTraceBasic {
+    TsTrackHead tsTraceHead;
+    uint8_t reserved1[4];
+    uint64_t timestamp;
+    uint64_t indexId;
+    uint64_t modelId;
+    uint16_t tagId;
+    uint16_t streamId;
+    uint32_t taskId;
+};
+
 struct StepTrace {
     TsTrackHead tsTraceHead;
     uint8_t reserved1[4];
@@ -56,6 +67,17 @@ struct StepTrace {
     uint16_t taskId;
     uint16_t tagId;
     uint8_t reserved2[2];
+};
+
+struct StepTraceV6 {
+    TsTrackHead tsTraceHead;
+    uint8_t reserved1[4];
+    uint64_t timestamp;
+    uint64_t indexId;
+    uint64_t modelId;
+    uint16_t tagId;
+    uint16_t streamId;
+    uint32_t taskId;
 };
 
 struct TsMemCpy {

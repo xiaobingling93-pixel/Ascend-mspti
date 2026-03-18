@@ -27,6 +27,7 @@ set(SRC_FILE
     ${TOP_DIR}/csrc/activity/ascend/channel/channel_pool.cpp
     ${TOP_DIR}/csrc/activity/ascend/parser/kernel_parser.cpp
     ${TOP_DIR}/csrc/activity/ascend/channel/soclog_convert.cpp
+    ${TOP_DIR}/csrc/activity/ascend/channel/tsfw_convert.cpp
     ${TOP_DIR}/csrc/activity/ascend/channel/stars_common.cpp
 )
 

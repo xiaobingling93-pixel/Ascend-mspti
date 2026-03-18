@@ -27,6 +27,7 @@ add_executable(mspti_reporter_utest
     ${TOP_DIR}/csrc/activity/ascend/channel/channel_reader.cpp
     ${TOP_DIR}/csrc/activity/ascend/parser/kernel_parser.cpp
     ${TOP_DIR}/csrc/activity/ascend/channel/soclog_convert.cpp
+    ${TOP_DIR}/csrc/activity/ascend/channel/tsfw_convert.cpp
     ${TOP_DIR}/csrc/activity/ascend/channel/stars_common.cpp
     ${UT_TOP_DIR}/stub/inject/profapi_inject_stub.cpp
     ${UT_TOP_DIR}/stub/inject/driver_inject_stub.cpp

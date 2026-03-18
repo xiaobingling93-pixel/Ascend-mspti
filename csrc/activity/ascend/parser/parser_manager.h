@@ -30,7 +30,7 @@ class ParserManager final {
 public:
     static ParserManager *GetInstance();
     // Device Channel
-    void ReportStepTrace(uint32_t deviceId, const StepTrace *stepTrace);
+    void ReportStepTrace(uint32_t deviceId, const StepTraceBasic *stepTrace);
 
     // CANN
     msptiResult ReportApi(const MsprofApi *data);

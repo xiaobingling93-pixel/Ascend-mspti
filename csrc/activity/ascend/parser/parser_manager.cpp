@@ -63,7 +63,7 @@ msptiResult ParserManager::ReportApi(const MsprofApi* const data)
     return MSPTI_SUCCESS;
 }
 
-void ParserManager::ReportStepTrace(uint32_t deviceId, const StepTrace* stepTrace)
+void ParserManager::ReportStepTrace(uint32_t deviceId, const StepTraceBasic* stepTrace)
 {
     if (!stepTrace) {
         return;

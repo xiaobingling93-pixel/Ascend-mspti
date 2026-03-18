@@ -194,7 +194,7 @@ TEST_F(ParserUtest, ShouldRetSuccessWhenInnerMark)
     uint64_t modelId = 0;
     uint64_t timestamp = 100;
     uint16_t streamId = 1;
-    StepTrace* stepTrace = new StepTrace();
+    StepTraceBasic* stepTrace = new StepTraceBasic();
     stepTrace->timestamp = timestamp;
     stepTrace->indexId = markId;
     stepTrace->modelId = modelId;

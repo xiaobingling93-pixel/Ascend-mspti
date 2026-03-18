@@ -45,7 +45,7 @@ public:
 
     msptiResult ReportRangeEnd(uint64_t rangeId);
 
-    void ReportMarkDataToActivity(uint32_t deviceId, const StepTrace* stepTrace);
+    void ReportMarkDataToActivity(uint32_t deviceId, const StepTraceBasic* stepTrace);
 
     bool IsInnerMarker(uint64_t markId);
 
