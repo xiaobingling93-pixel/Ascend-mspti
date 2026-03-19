@@ -145,11 +145,11 @@ void ContextManager::InitHostTimeInfo()
         curHostTimeInfo_->startMonotonicRawNs = (t2 + t1) / AVE_NUM;
     } else {
         curHostTimeInfo_->freq = GetHostFreq();
-        auto t1 = Mspti::Common::Utils::GetClockRealTimeNs();
         curHostTimeInfo_->startSysCnt = Mspti::Common::Utils::GetHostSysCnt();
-        auto t2 = Mspti::Common::Utils::GetClockRealTimeNs();
-        curHostTimeInfo_->startRealTime = (t2 + t1) / AVE_NUM;
     }
+    auto t1 = Mspti::Common::Utils::GetClockRealTimeNs();
+    auto t2 = Mspti::Common::Utils::GetClockRealTimeNs();
+    curHostTimeInfo_->startRealTime = (t2 + t1) / AVE_NUM;
     std::lock_guard<std::mutex> lk(hostTimeMtx_);
     hostTimeInfo_ = std::move(curHostTimeInfo_);
 }
@@ -202,9 +202,10 @@ uint64_t ContextManager::GetRealTimeFromSysCnt(uint64_t sysCnt)
     return CalculateRealTime(sysCnt, hostTime);
 }
 
-uint64_t ContextManager::CalculateRealTimeWithMonotonicTime(uint64_t sysCnt, const DevTimeInfo &devTimeInfo)
+uint64_t ContextManager::CalculateRealTimeWithMonotonicTime(uint64_t timestamp, const DevTimeInfo &devTimeInfo)
 {
-    return (sysCnt + devTimeInfo.startRealTime) - devTimeInfo.startMonotonicRawNs;
+    int64_t diff = static_cast<int64_t>(timestamp) - static_cast<int64_t>(devTimeInfo.startMonotonicRawNs); 
+    return diff + static_cast<int64_t>(devTimeInfo.startRealTime);
 }
 
 uint64_t ContextManager::CalculateRealTime(uint64_t sysCnt, const DevTimeInfo &devTimeInfo)
