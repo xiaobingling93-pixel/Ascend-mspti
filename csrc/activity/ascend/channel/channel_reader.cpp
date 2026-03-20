@@ -16,8 +16,6 @@
 */
 #include "csrc/activity/ascend/channel/channel_reader.h"
 
-#include <cstring>
-
 #include "csrc/activity/activity_manager.h"
 #include "csrc/activity/ascend/channel/channel_data.h"
 #include "csrc/activity/ascend/parser/parser_manager.h"

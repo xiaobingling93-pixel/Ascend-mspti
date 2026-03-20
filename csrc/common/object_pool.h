@@ -20,8 +20,6 @@
 
 #include <memory>
 #include <functional>
-#include <queue>
-#include <typeinfo>
 
 namespace Mspti {
 namespace Common {

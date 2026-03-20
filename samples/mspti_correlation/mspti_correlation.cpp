@@ -222,7 +222,7 @@ void MsptiTrace(uint8_t *buffer, size_t size, size_t validSize)
             LOG_PRINT("Consume data fail, error is %s", GetResultCodeString(status));
             break;
         }
-    } while (1);
+    } while (true);
     free(buffer);
 }
 

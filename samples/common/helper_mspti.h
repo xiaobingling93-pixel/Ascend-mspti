@@ -36,7 +36,7 @@ struct UserData {
     aclrtStream* stream;
 };
 
-UserData* g_userData;
+static UserData* g_userData = nullptr;
 
 // mspti 申请内存接口
 void UserBufferRequest(uint8_t **buffer, size_t *size, size_t *maxNumRecords)
@@ -283,7 +283,7 @@ void UserBufferComplete(uint8_t *buffer, size_t size, size_t validSize)
                 LOG_PRINT("Consume data fail, error is %s", GetResultCodeString(status));
                 break;
             }
-        } while (1);
+        } while (true);
     }
     free(buffer);
 }

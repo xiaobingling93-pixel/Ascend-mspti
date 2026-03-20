@@ -22,7 +22,6 @@
 #include <mutex>
 #include <queue>
 #include <vector>
-#include <atomic>
 
 namespace Mspti {
 namespace Common {

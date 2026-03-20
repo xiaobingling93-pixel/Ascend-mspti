@@ -16,10 +16,6 @@
 */
 #include "csrc/activity/ascend/channel/channel_pool.h"
 
-#include <cstring>
-#include <functional>
-#include <unistd.h>
-
 #include "csrc/common/config.h"
 #include "csrc/common/plog_manager.h"
 #include "csrc/common/utils.h"

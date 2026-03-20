@@ -21,6 +21,7 @@
 #include <list>
 #include <unordered_map>
 #include <mutex>
+#include <queue>
 
 #include "csrc/common/utils.h"
 #include "csrc/common/plog_manager.h"

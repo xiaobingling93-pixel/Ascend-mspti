@@ -18,15 +18,9 @@
 #ifndef MSPTI_COMMON_UTILS_H
 #define MSPTI_COMMON_UTILS_H
 
-#include <cstdint>
-#include <exception>
 #include <memory>
 #include <string>
-#include <tuple>
-#include <cstddef>
-#include <functional>
 #include <utility>
-#include <initializer_list>
 
 #ifndef UNLIKELY
 #ifdef _MSC_VER

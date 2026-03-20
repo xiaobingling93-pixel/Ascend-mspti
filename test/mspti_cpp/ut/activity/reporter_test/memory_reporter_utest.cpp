@@ -55,7 +55,7 @@ void UserBufferComplete(uint8_t *buffer, size_t size, size_t validSize)
             } else if (status == MSPTI_ERROR_MAX_LIMIT_REACHED) {
                 break;
             }
-        } while (1);
+        } while (true);
     }
     free(buffer);
 }

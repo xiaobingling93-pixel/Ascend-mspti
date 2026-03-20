@@ -61,7 +61,7 @@ struct CannThreadCache {
     ApiEvent lastCommunication;
     std::vector<Tag<MsprofCompactInfo>>  taskQueue;
     explicit CannThreadCache(uint32_t tid): threadId(tid), lastTask(), lastCommunication() {};
-    uint64_t GetNodeLaunchId()
+    uint64_t GetNodeLaunchId() const
     {
         uint64_t ans = (static_cast<uint64_t>(threadId) << 32) | nodeLaunchId.load();
         return ans;
