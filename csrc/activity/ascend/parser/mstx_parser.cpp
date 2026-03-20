@@ -116,7 +116,7 @@ msptiResult MstxParser::ReportRangeStartA(const char* msg, AclrtStream stream, u
     RangeStartContext mstxContext{};
     uint64_t timestamp = 0;
     if (Common::ContextManager::GetInstance()->GetHostTimeInfo(mstxContext.devTimeInfo)) {
-        timestamp = Common::ContextManager::CalculateRealTime(Mspti::Common::Utils::GetHostSysCnt(),
+        timestamp = Common::ContextManager::GetInstance()->CalculateRealTime(Mspti::Common::Utils::GetHostSysCnt(),
                                                               mstxContext.devTimeInfo);
     } else {
         timestamp = Mspti::Common::Utils::GetClockRealTimeNs();
@@ -169,7 +169,7 @@ msptiResult MstxParser::ReportRangeEnd(uint64_t rangeId)
             MSPTI_LOGW("Input rangeId[%lu] is invalid.", rangeId);
             return MSPTI_SUCCESS;
         }
-        timestamp = Common::ContextManager::CalculateRealTime(Mspti::Common::Utils::GetHostSysCnt(),
+        timestamp = Common::ContextManager::GetInstance()->CalculateRealTime(Mspti::Common::Utils::GetHostSysCnt(),
                                                               iter->second.devTimeInfo);
         if (iter->second.stream) {
             if (Common::ProfTrace(rangeId, static_cast<uint64_t>(MSPTI_ACTIVITY_FLAG_MARKER_END_WITH_DEVICE),
@@ -223,7 +223,7 @@ void MstxParser::ReportMarkDataToActivity(uint32_t deviceId, const StepTraceBasi
     msptiActivityMarker mark;
     mark.kind = MSPTI_ACTIVITY_KIND_MARKER;
     mark.sourceKind = MSPTI_ACTIVITY_SOURCE_KIND_DEVICE;
-    mark.timestamp = Common::ContextManager::CalculateRealTime(stepTrace->timestamp, devTimeInfo);
+    mark.timestamp = Common::ContextManager::GetInstance()->CalculateRealTime(stepTrace->timestamp, devTimeInfo);
     mark.id = stepTrace->indexId;
     mark.flag = static_cast<msptiActivityFlag>(stepTrace->modelId);
     mark.objectId.ds.deviceId = deviceId;

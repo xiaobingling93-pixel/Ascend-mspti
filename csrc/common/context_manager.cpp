@@ -196,9 +196,6 @@ uint64_t ContextManager::GetRealTimeFromSysCnt(uint64_t sysCnt)
         }
         hostTime = *hostTimeInfo_;
     }
-    if (!HostFreqIsEnable() || hostTime.freq == 0) {
-        return CalculateRealTimeWithMonotonicTime(sysCnt, hostTime);
-    }
     return CalculateRealTime(sysCnt, hostTime);
 }
 
@@ -208,7 +205,7 @@ uint64_t ContextManager::CalculateRealTimeWithMonotonicTime(uint64_t timestamp, 
     return diff + static_cast<int64_t>(devTimeInfo.startRealTime);
 }
 
-uint64_t ContextManager::CalculateRealTime(uint64_t sysCnt, const DevTimeInfo &devTimeInfo)
+uint64_t ContextManager::CalculateRealTimeWithSysCnt(uint64_t sysCnt, const DevTimeInfo &devTimeInfo)
 {
     if (devTimeInfo.freq == 0) {
         return sysCnt;
@@ -217,6 +214,14 @@ uint64_t ContextManager::CalculateRealTime(uint64_t sysCnt, const DevTimeInfo &d
     return (delta / static_cast<int64_t>(devTimeInfo.freq)) * MSTONS +
            (delta % static_cast<int64_t>(devTimeInfo.freq) * MSTONS) / static_cast<int64_t>(devTimeInfo.freq) +
            static_cast<int64_t>(devTimeInfo.startRealTime);
+}
+
+uint64_t ContextManager::CalculateRealTime(uint64_t sysCnt, const DevTimeInfo &devTimeInfo)
+{
+    if (!HostFreqIsEnable() || devTimeInfo.freq == 0) {
+        return CalculateRealTimeWithMonotonicTime(sysCnt, devTimeInfo);
+    }
+    return CalculateRealTimeWithSysCnt(sysCnt, devTimeInfo);
 }
 
 uint64_t ContextManager::GetHostTimeStampNs()
