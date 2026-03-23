@@ -11,9 +11,9 @@ typedef struct {
     const void *functionParams;    // 当前函数的参数
     const void *functionReturnValue;    // 指向Runtime或驱动API返回值的指针
     const char *symbolName;    // 当前函数所操作的符号的名称
-    uint64_t correlationId;    // 此回调的活动记录关联ID。对于一个驱动域回调MSPTI_CB_DOMAIN_DRIVER_API，此ID将等于相关ID，CANN驱动对应的MSPTI_ActivityAPI记录中的函数调用。对于运行时域回调MSPTI_CB_DOMAIN_RUNTIME_API，此ID将等于相关CANN对应的MSPTI_ActivityAPI记录的ID。运行时函数调用。在回调中，这个ID用于将用户数据与活动记录关联。
+    uint64_t correlationId;    // 本ID可以用于关联msptiCallbackData和activity记录。在runtime回调函数调用场景中activity记录为msptiActivityApi数据，本ID与记录runtime函数调用的msptiActivityApi数据中的correlationId相同，可以用于数据关联
     uint64_t reserved1;    // 内部预留，未定义
     uint64_t reserved2;    // 内部预留，未定义
-    uint64_t *correlationData;    // 入口和出口回调之间共享数据的指针。调用运行时或驱动API函数。这个字段可用于将64位值从入口回调传递到对应的退出回调。
+    uint64_t *correlationData;    // 提供一个用于在runtime或者驱动API的入口和出口共享数据的指针。这个字段可以用于将64位数据从入口回调函数传递到出口回调函数
 } msptiCallbackData;
 ```
