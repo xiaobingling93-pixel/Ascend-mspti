@@ -191,10 +191,16 @@ msptiResult ActivityManager::Register(msptiActivityKind kind)
     activity_switch_[kind] = true;
     append_only_activity_switch_[kind] = true;
     MSPTI_LOGI("Register Activity kind: %d", static_cast<int>(kind));
-    std::lock_guard<std::mutex> lk(devices_mtx_);
+
+    std::vector<uint32_t> localDevices;
+    {
+        std::lock_guard<std::mutex> lk(devices_mtx_);
+        localDevices.assign(devices_.begin(), devices_.end());
+    }
+
     ActivitySwitchType curOpenSwitch{};
     curOpenSwitch[kind] = true;
-    for (auto device : devices_) {
+    for (auto device : localDevices) {
         Mspti::Ascend::DevTaskManager::GetInstance()->StartDevProfTask(device, curOpenSwitch);
     }
     Mspti::Parser::ParserManager::GetInstance()->StartAnalysisTask(kind);

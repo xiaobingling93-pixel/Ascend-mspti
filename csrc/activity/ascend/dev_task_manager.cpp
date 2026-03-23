@@ -54,7 +54,6 @@ DevTaskManager::~DevTaskManager()
 DevTaskManager::DevTaskManager()
 {
     Mspti::Common::ContextManager::GetInstance()->InitHostTimeInfo();
-    RegisterReportCallback();
 }
 
 msptiResult DevTaskManager::StartAllDevKindProfTask(std::vector<std::unique_ptr<DevProfTask>>& profTasks,
