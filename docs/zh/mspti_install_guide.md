@@ -12,7 +12,30 @@
 
 ## 安装run包
 
-### 源码编译
+支持两种方式获取run包：
+- 方式一：从releases页面下载run包。
+- 方式二：基于源码构建run包。
+
+### 方式一：releases页面下载
+软件安装包发布地址：
+- [msPTI releases](https://gitcode.com/Ascend/mspti/releases)
+
+下载后建议先进行完整性校验（MD5），再安装。示例如下：
+```shell
+wget https://gitcode.com/Ascend/mspti/releases/download/<tag>/mindstudio-profiler-tools-interface_<version>_<arch>.run
+md5sum mindstudio-profiler-tools-interface_<version>_<arch>.run
+echo "<expected_md5> mindstudio-profiler-tools-interface_<version>_<arch>.run" | md5sum -c -
+```
+**说明：**
+- `<expected_md5>` 请以 release 页面同版本安装包对应的 MD5 值为准。
+- 各版本安装包 MD5 清单请参见[版本说明](./release_notes.md)。
+
+**MD5sum 校验不一致处理建议：**
+- 若 `md5sum -c -` 输出 `FAILED`，请勿继续安装。
+- 请先删除当前文件并重新下载，再次执行 MD5 校验。
+- 仍无法通过校验时，请在 releases 页面核对文件名与版本是否一致，并通过 Issues 反馈问题。
+
+### 方式二：源码编译
 
 执行如下命令编译run包：
 

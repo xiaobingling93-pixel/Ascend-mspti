@@ -27,6 +27,9 @@ msPTI主要包括以下功能：
 
 ```
 
+## 版本说明
+msPTI版本说明，详情请参见[msPTI版本说明](docs/zh/release_notes.md)。
+
 ## 环境部署
 
 ### 环境和依赖
