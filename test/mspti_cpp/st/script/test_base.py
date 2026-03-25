@@ -15,10 +15,10 @@
 # MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 # See the Mulan PSL v2 for more details.
 # -------------------------------------------------------------------------
-from _datetime import datetime
 import os
 import re
 import shutil
+import time
 import logging
 
 import subprocess
@@ -43,26 +43,30 @@ class TestProfiling(unittest.TestCase):
         self.timeout = timeout
         self.logger = logging
         self.cfg_path = ConfigPaths()
-        self.duration_time = 0
+        self.start_time = 0
+        self.line = "-" * 30
         super(TestProfiling, self).__init__("execute")
 
     def initTest(self):
+        self.start_time = time.time()
         self.cfg_value = ConfigValues()
         self.msprofbin_cmd = ""
         self.res_dir = os.path.join(self.cfg_path.result_path, self.id)
         self.res = 0
         self.__result = self.cfg_value.pass_res
         self.slog_stdout = "{}.log".format(os.path.join(self.res_dir, self.id))
-        self.logger.info("------------------------------- "
-                         "Start execute case {} -------------------------------".format(self.id))
+        self.plog_path = os.path.join(self.res_dir, "plog")
+        os.environ["ASCEND_PROCESS_LOG_PATH"] = self.plog_path
+        self.logger.info(self.line + f" Start execute case {self.id} " + self.line)
 
     def write_res(self):
         if self.res != 0:
             self.__result = self.cfg_value.fail_res
-        self.logger.info("------------------------------- "
-                         "End execute case {} ---------------------------------".format(self.id))
-        with open('result.txt', 'a+') as f:
-            f.write('%s %s %s\n' % (self.id, self.__result, self.duration_time))
+        cost_time = time.time() - self.start_time
+        minutes = int(cost_time // 60)
+        seconds = int(cost_time % 60)
+        duration_str = f"{minutes}min, {seconds}s"
+        self.logger.info(self.line + f" End execute case {self.id} ({duration_str}) " + self.line)
 
     def execute(self):
         self.initTest()
@@ -120,10 +124,8 @@ class TestProfiling(unittest.TestCase):
         os.makedirs(self.res_dir)
 
     def executeCmd(self):
-        start_time = datetime.now()
         output = self.subprocess_cmd(self.msprofbin_cmd)
         if output:
             self.logger.info(output)
-        time_diff = datetime.now() - start_time
-        self.duration_time = time_diff.total_seconds()
-        self.view_error_msg(self.res_dir, "plog")
+        self.view_error_msg(self.plog_path, "plog")
+        self.view_error_msg(self.slog_stdout, "screen")

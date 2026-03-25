@@ -117,8 +117,8 @@ class MsptiGraphTest(test_base.TestProfiling):
 
 if __name__ == '__main__':
     suite = unittest.TestSuite()
-    suite.addTest(
-        MsptiGraphTest("test_mspti_graph", "mspti_c", "", "", timeout=480))
+    timeout = 120
+    suite.addTest(MsptiGraphTest("test_mspti_graph", "mspti_c", "", "", timeout=timeout))
     runner = unittest.TextTestRunner(verbosity=2)
     test_result = runner.run(suite)
     if not test_result.wasSuccessful():

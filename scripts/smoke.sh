@@ -29,7 +29,8 @@ output=""
 model_path=""
 success_list=()
 failed_list=()
-test_List=()
+test_list=()
+line=$(printf '=%.0s' {1..70})
 
 show_help() {
     cat << EOF
@@ -43,6 +44,7 @@ Options:
   --cann-path=<path>        Specify the installation path of CANN
   --conda-path=<path>       Specify the installation path of conda
   --conda-env=<env-name>    Specify the name of the conda environment to activate
+  --model-path=<path>       Specify the path of the model to be tested (required except l0)
   --smoke-level=<level>     Specify the type of smoke test (default: l0)
                               all - Execute all scripts containing "test"
                               l1 - Execute scripts containing "l1_test"
@@ -96,14 +98,14 @@ function parse_script_args() {
             shift
             continue
             ;;
-        --model_path=*)
-            model_path=${1#--model_path=}
+        --model-path=*)
+            model_path=${1#--model-path=}
             shift
             continue
             ;;
         --case=*)
             case=${1#--case=}
-            IFS=',' read -r -a test_list <<< "case"
+            IFS=',' read -r -a test_list <<< "$case"
             shift
             continue
             ;;
@@ -118,7 +120,7 @@ function parse_script_args() {
 
 function run_smoke() {
     cd $TOP_DIR/test/mspti_cpp/st/testcase
-    if [ -z "$test_list" ]; then
+    if [ ${#test_list[@]} -eq 0 ]; then
         if [ "${smoke_level}" = "all" ]; then
             mapfile -t test_list < <(ls | grep "\.sh$" | grep -E "test")
         elif [ "${smoke_level}" = "l1" ]; then
@@ -137,23 +139,30 @@ function run_smoke() {
             print $LEVEL_INFO "- $item"
         done
         for item in "${test_list[@]}"; do
-            print $LEVEL_INFO "========================================================"
+            print $LEVEL_INFO "${line}${line}"
             print $LEVEL_INFO "[START] $item"
+            start_time=$(date +%s)
             bash $item
             exit_code=$?
+            end_time=$(date +%s)
+            cost_time=$((end_time - start_time))
+            minutes=$((cost_time / 60))
+            seconds=$((cost_time % 60))
+            duration_str="${minutes}min, ${seconds}s"
             if [ $exit_code -eq 0 ]; then
                 print $LEVEL_INFO "[SUCCESS] $item"
-                success_list+=("$item")
+                success_list+=("$item ($duration_str)")
             else
                 print $LEVEL_ERROR "[FAILED] $item"
-                failed_list+=("$item")
+                failed_list+=("$item ($duration_str)")
             fi
         done
     else
+        print $LEVEL_ERROR "No test cases were found."
         exit 1
     fi
 
-    print $LEVEL_INFO "======================SUMMARY==========================="
+    print $LEVEL_INFO "${line} SUMMARY ${line}"
     if [ ${#success_list[@]} -gt 0 ]; then
         print $LEVEL_INFO "Number of successfully executed scripts: ${#success_list[@]}"
         print $LEVEL_INFO "Success list:"
@@ -168,13 +177,33 @@ function run_smoke() {
             print $LEVEL_ERROR "- $script"
         done
     fi
-    print $LEVEL_INFO "========================================================"
+    print $LEVEL_INFO "${line}${line}"
     if [ ${#failed_list[@]} -gt 0 ]; then
         exit 1
     fi
 }
 
 function init_env() {
+    if [ -z "${cann_path}" ]; then
+        print $LEVEL_ERROR "Please specify the installation path of CANN"
+        exit 1
+    fi
+    if [ -z "${conda_path}" ]; then
+        print $LEVEL_ERROR "Please specify the installation path of conda"
+        exit 1
+    fi
+    if [ -z "${conda_env}" ]; then
+        print $LEVEL_ERROR "Please specify the name of the conda environment to activate"
+        exit 1
+    fi
+    if [[ "$smoke_level" != "l0" && -z "${model_path}" ]]; then
+        print $LEVEL_ERROR "Please specify the path of the model to be tested"
+        exit 1
+    fi
+    if [ -z "${output}" ]; then
+        print $LEVEL_ERROR "Please specify the output path for test data"
+        exit 1
+    fi
     if ! source "${conda_path}/bin/activate"; then
         print $LEVEL_ERROR "Failed to source conda activate script"
     fi
@@ -220,4 +249,3 @@ install_mspti
 set_env
 
 run_smoke
-

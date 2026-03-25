@@ -29,7 +29,7 @@ logging.basicConfig(level=logging.INFO,
 class MsptiCommunication(test_base.TestProfiling):
     def getTestCmd(self, scene=None):
         script_path = self.cfg_path.mspti_communication_path
-        self.msprofbin_cmd += f"cd {script_path}; bash sample_run.sh > {self.slog_stdout} 2>&1"
+        self.msprofbin_cmd += f"cd {script_path}; bash run.sh > {self.slog_stdout} 2>&1"
 
     def getCommActivity(self, content):
         pattern = r"\[Communication\](.*?)correlationId:\s*\d+"
@@ -65,7 +65,7 @@ class MsptiCommunication(test_base.TestProfiling):
         logging.info("check_api_data start")
         for api_data in api_datas:
             self.assertTrue(api_data["start"] <= api_data["end"], "时间不对")
-            self.assertEqual(api_data["kind"], 3, f"api kind must be 3, but is {api_data['kind']}")
+            self.assertEqual(int(api_data["kind"]), 3, f"api kind must be 3, but is {api_data['kind']}")
 
     def check_correlation(self, comm_datas, api_datas):
         logging.info("check_correlation start")
@@ -84,21 +84,19 @@ class MsptiCommunication(test_base.TestProfiling):
             self.assertTrue(matched, f'Mismatch: Communication="{comm_name}, corr_id={corr_id}"')
 
     def checkResDir(self, scend=None):
-        comm_data = []
-        api_data = []
         with open(self.slog_stdout, 'r', encoding='utf-8') as txtfile:
             content = txtfile.read()
             comm_data = self.getCommActivity(content)
             api_data = self.getApiActivity(content)
-        self.check_comm_data(comm_data)
-        self.check_api_data(api_data)
-        self.check_correlation(comm_data, api_data)
+            self.check_comm_data(comm_data)
+            self.check_api_data(api_data)
+            self.check_correlation(comm_data, api_data)
 
 
 if __name__ == '__main__':
     suite = unittest.TestSuite()
-    suite.addTest(
-        MsptiCommunication("test_mspti_communication", "mspti_c", "", "", timeout=480))
+    timeout = 120
+    suite.addTest(MsptiCommunication("test_mspti_communication", "mspti_c", "", "", timeout=timeout))
     runner = unittest.TextTestRunner(verbosity=2)
     test_result = runner.run(suite)
     if not test_result.wasSuccessful():
