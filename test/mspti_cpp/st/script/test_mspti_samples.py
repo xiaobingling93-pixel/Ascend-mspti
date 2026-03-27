@@ -298,16 +298,16 @@ if __name__ == '__main__':
         MsptiHcclActivityTest("test_hccl_mspti_correlation", "sample", "", "", timeout=timeout))
     suite.addTest(
         MsptiExternalCorrelationTest("test_mspti_external_correlation", "sample", "", "", timeout=timeout))
-    # suite.addTest(
-    #     MsptiMstxActivityDomainTest("test_mspti_mstx_activity_domain", "sample", "", "", timeout=timeout))
+    suite.addTest(
+        MsptiMstxActivityDomainTest("test_mspti_mstx_activity_domain", "sample", "", "", timeout=timeout))
     suite.addTest(
         CallbackMstxTest("test_mspti_callback", "sample", "", "", timeout=timeout))
     suite.addTest(
         CallbackDomainTest("test_mspti_callback_domain", "sample", "", "", timeout=timeout))
     suite.addTest(
         PythonMonitorTest("test_python_monitor", "sample", "", "", timeout=timeout))
-    # suite.addTest(
-    #     PythonMstxMonitorTest("test_python_mstx_monitor", "sample", "", "", timeout=timeout))
+    suite.addTest(
+        PythonMstxMonitorTest("test_python_mstx_monitor", "sample", "", "", timeout=timeout))
     runner = unittest.TextTestRunner(verbosity=2)
     test_result = runner.run(suite)
     if not test_result.wasSuccessful():
