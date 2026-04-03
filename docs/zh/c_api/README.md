@@ -1,10 +1,10 @@
-# 总体说明<a name="ZH-CN_TOPIC_0000001977973392"></a>
+# C API总体说明<a name="ZH-CN_TOPIC_0000001977973392"></a>
 
 ## 接口简介<a name="section883612815318"></a>
 
 Profiling模块提供msPTI C接口，用于实现采集各模块性能数据。
 
-msPTI API的功能介绍和使用示例请参见[msPTI工具](../README.md)。
+msPTI API的功能介绍和使用示例请参见[msPTI工具](../getting_started/samples_guide.md)。
 
 头文件路径：$\{INSTALL\_DIR\}/include/mspti。
 
