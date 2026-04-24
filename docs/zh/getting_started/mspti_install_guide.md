@@ -29,7 +29,7 @@ echo "<expected_md5> mindstudio-profiler-tools-interface_<version>_<arch>.run" |
 ```
 
 - `<expected_md5>`请以release页面同版本安装包对应的MD5值为准。
-- 各版本安装包MD5清单请参见[版本说明](./release_notes.md)。
+- 各版本安装包MD5清单请参见[版本说明](../release_notes.md)。
 
 **MD5sum 校验不一致处理建议：**
 
@@ -46,6 +46,7 @@ git clone https://gitcode.com/Ascend/mspti.git
 cd mspti
 bash scripts/build.sh [<version>]
 ```
+
 - 支持通过环境变量指定版本号（优先级最高）：`BUILD_VERSION`用于设置run包版本，`WHL_VERSION`用于设置whl包版本。
 - 支持通过命令行参数指定版本号（优先级低于环境变量），默认版本号为`version.info`中的`Version`字段。
 - run包中的arch表示系统架构，根据实际运行系统自动适配。

@@ -6,17 +6,22 @@
    请先参见 《[msPTI 工具安装指南](mspti_install_guide.md)》完成msPTI工具安装。
 
 2. 配置CANN环境变量。
+
    ```bash
    source ${install_path}/set_env.sh
    ```
+
    其中`${install_path}`需要替换为CANN的安装路径，例如`/usr/local/Ascend/cann`。
 
 3. 进入样例目录并执行脚本。
+
    ```bash
    cd ${install_path}/tools/mspti/samples/mspti_activity
    bash sample_run.sh
    ```
+
    看到如下信息，则表示运行成功：
+
    ```bash
    ...
    ========== UserBufferRequest ============
@@ -35,4 +40,5 @@
    [MEMCPY] copyKind: HTOD, bytes: 32, start: 1775186328012540625, end: 1775186328012599655, deviceId: 0, streamId: 4294967295, correlationId: 2, isAsync: 0
    ...
    ```
+
    `samples`目录下各样例的适用场景、能力说明与补充说明，请参见 《[msPTI样例集](../../../samples/README.md)》。
