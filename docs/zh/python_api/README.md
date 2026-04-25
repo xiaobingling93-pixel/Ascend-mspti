@@ -31,13 +31,20 @@ msPTI API的功能介绍和使用示例请参见[msPTI工具](../getting_started
 |[MstxMonitor.disable_domain](./context/MstxMonitor-disable_domain.md)|关闭对应域打点的采集。|
 |[MstxMonitor.flush_all](./context/MstxMonitor-flush_all.md)|调用回调函数，将缓冲区中的所有Activity数据写入用户内存。|
 |[MstxMonitor.set_buffer_size](./context/MstxMonitor-set_buffer_size.md)|在采集开始前设置Activity Buffer的大小。|
+|**CommunicationMonitor类型**|**CommunicationMonitor说明**|
+|[CommunicationMonitor.start](./context/CommunicationMonitor-start.md)|标识通信算子性能数据采集的开始。|
+|[CommunicationMonitor.stop](./context/CommunicationMonitor-stop.md)|标识通信算子性能数据采集的结束。|
+|[CommunicationMonitor.flush_all](./context/CommunicationMonitor-flush_all.md)|调用回调函数，将缓冲区中的所有Activity数据写入用户内存。|
+|[CommunicationMonitor.set_buffer_size](./context/CommunicationMonitor-set_buffer_size.md)|在采集开始前设置Activity Buffer的大小。|
 |**Data Structure类型**|**Data Structure说明**|
 |[HcclData](./context/HcclData.md)|Activity Record类型MSPTI_ACTIVITY_KIND_HCCL对应的结构体。|
 |[KernelData](./context/KernelData.md)|Activity Record类型MSPTI_ACTIVITY_KIND_KERNEL对应的结构体。|
 |[MarkerData](./context/MarkerData.md)|Activity Record类型MSPTI_ACTIVITY_KIND_MARKER对应的结构体。|
 |[RangeMarkerData](./context/RangeMarkerData.md)|Activity Record类型MSPTI_ACTIVITY_KIND_MARKER对应的结构体。|
+|[CommunicationData](./context/CommunicationData.md)|Activity Record类型MSPTI_ACTIVITY_KIND_COMMUNICATION对应的结构体。|
 |**Enumeration类型**|**Enumeration说明**|
 |[msptiResult](./context/msptiResult.md)|MSPTI返回的错误和结果代码。|
 |[msptiActivityKind](./context/msptiActivityKind.md)|MSPTI支持的所有Activity类型。|
 |[msptiActivityFlag](./context/msptiActivityFlag.md)|Activity Record的活动标记。|
 |[msptiActivitySourceKind](./context/msptiActivitySourceKind.md)|标记Activity数据来源。|
+|[msptiCommunicationDataType](./context/msptiCommunicationDataType.md)|通信算子传输的数据类型。|

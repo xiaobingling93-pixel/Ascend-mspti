@@ -38,6 +38,9 @@ const char *THREAD_ID       = "threadId";
 const char *DOMAIN_NAME     = "domain";
 const char *BANDWIDTH       = "bandWidth";
 const char *COMMNAME        = "commName";
+const char *DATA_TYPE       = "dataType";
+const char *COUNT           = "count";
+const char *ALG_TYPE        = "algType";
 
 // default value
 const int64_t INVALID_PROCESSID = -1L;
@@ -155,6 +158,44 @@ void CallHcclCallback(PyObject *hcclCallback, const msptiActivityHccl* hccl)
     Py_XDECREF(hcclData);
 }
 
+void CallCommunicationCallback(PyObject *communicationCallback, const msptiActivityCommunication* communication)
+{
+    if (communicationCallback == nullptr) {
+        MSPTI_LOGW("Communication callback is nullptr");
+        return;
+    }
+    if (communication == nullptr) {
+        MSPTI_LOGE("Communication data is nullptr");
+        return;
+    }
+    PyObject *communicationData = Py_BuildValue("{sIsIsKsIsIsKsKsssssssK}",
+        KIND, static_cast<uint32_t>(communication->kind),
+        DATA_TYPE, static_cast<uint32_t>(communication->dataType),
+        COUNT, communication->count,
+        DEVICE_ID, communication->ds.deviceId,
+        STREAM_ID, communication->ds.streamId,
+        START, communication->start,
+        END, communication->end,
+        ALG_TYPE, communication->algType,
+        NAME, communication->name,
+        COMMNAME, communication->commName,
+        CORRELATION_ID, communication->correlationId);
+    if (communicationData == nullptr) {
+        MSPTI_LOGE("Build python communication data failed");
+        return;
+    }
+    /* make sure callback doesn't go away */
+    Py_INCREF(communicationCallback);
+    auto ret = PyObject_CallFunction(communicationCallback, "O", communicationData);
+    if (ret == nullptr) {
+        MSPTI_LOGE("Call communication callback failed");
+    } else {
+        Py_DECREF(ret);
+    }
+    Py_DECREF(communicationCallback);
+    Py_XDECREF(communicationData);
+}
+
 struct PyGILGuard {
     PyGILGuard() : gilState(PyGILState_Ensure()) {}
     ~PyGILGuard()
@@ -229,17 +270,30 @@ void MsptiAdapter::UserBufferConsume(msptiActivity *record)
         MSPTI_LOGE("Mspti consume buffer failed");
         return;
     }
-    if (record->kind == MSPTI_ACTIVITY_KIND_KERNEL) {
-        msptiActivityKernel *kernel = Mspti::Common::ReinterpretConvert<msptiActivityKernel*>(record);
-        CallKernelCallback(GetInstance()->GetKernelCallback(), kernel);
-    } else if (record->kind == MSPTI_ACTIVITY_KIND_MARKER) {
-        msptiActivityMarker* marker = Mspti::Common::ReinterpretConvert<msptiActivityMarker*>(record);
-        CallMstxCallback(GetInstance()->GetMstxCallback(), marker);
-    } else if (record->kind == MSPTI_ACTIVITY_KIND_HCCL) {
-        msptiActivityHccl* hccl = Mspti::Common::ReinterpretConvert<msptiActivityHccl *>(record);
-        CallHcclCallback(GetInstance()->GetHcclCallback(), hccl);
-    } else {
-        MSPTI_LOGW("Not supported mspti activity kind");
+    switch (record->kind) {
+        case MSPTI_ACTIVITY_KIND_KERNEL: {
+            msptiActivityKernel *kernel = Common::ReinterpretConvert<msptiActivityKernel*>(record);
+            CallKernelCallback(GetInstance()->GetKernelCallback(), kernel);
+            break;
+        }
+        case MSPTI_ACTIVITY_KIND_MARKER: {
+            msptiActivityMarker* marker = Common::ReinterpretConvert<msptiActivityMarker*>(record);
+            CallMstxCallback(GetInstance()->GetMstxCallback(), marker);
+            break;
+        }
+        case MSPTI_ACTIVITY_KIND_HCCL: {
+            msptiActivityHccl* hccl = Common::ReinterpretConvert<msptiActivityHccl *>(record);
+            CallHcclCallback(GetInstance()->GetHcclCallback(), hccl);
+            break;
+        }
+        case MSPTI_ACTIVITY_KIND_COMMUNICATION: {
+            msptiActivityCommunication* communication = Common::ReinterpretConvert<msptiActivityCommunication*>(record);
+            CallCommunicationCallback(GetInstance()->GetCommunicationCallback(), communication);
+            break;
+        }
+        default:
+            MSPTI_LOGW("Not supported mspti activity kind");
+            break;
     }
 }
 
@@ -360,6 +414,27 @@ msptiResult MsptiAdapter::UnregisterHcclCallback()
     std::lock_guard<std::mutex> lk(mtx_);
     Py_XDECREF(hcclCallback_);
     hcclCallback_ = nullptr;
+    return MSPTI_SUCCESS;
+}
+
+msptiResult MsptiAdapter::RegisterCommunicationCallback(PyObject *communicationCallback)
+{
+    std::lock_guard<std::mutex> lk(mtx_);
+    Py_XINCREF(communicationCallback);
+    communicationCallback_ = communicationCallback;
+    return msptiActivityEnable(MSPTI_ACTIVITY_KIND_COMMUNICATION);
+}
+
+PyObject* MsptiAdapter::GetCommunicationCallback() const
+{
+    return communicationCallback_;
+}
+
+msptiResult MsptiAdapter::UnregisterCommunicationCallback()
+{
+    std::lock_guard<std::mutex> lk(mtx_);
+    Py_XDECREF(communicationCallback_);
+    communicationCallback_ = nullptr;
     return MSPTI_SUCCESS;
 }
 

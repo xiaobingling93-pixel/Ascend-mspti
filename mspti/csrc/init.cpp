@@ -185,6 +185,35 @@ PyMethodDef *GetHcclMethods()
     return methodHccl;
 }
 } // Hccl
+
+namespace Communication {
+PyObject *RegisterCB(PyObject *self, PyObject *args)
+{
+    PyObject *callback = nullptr;
+    if (!PyArg_ParseTuple(args, "O", &callback)) {
+        PyErr_SetString(PyExc_TypeError, "Communication register callback args parse failed!");
+        return nullptr;
+    }
+    auto ret = MsptiAdapter::GetInstance()->RegisterCommunicationCallback(callback);
+    return Py_BuildValue("i", ret);
+}
+
+PyObject *UnregisterCB(PyObject *self, PyObject *args)
+{
+    auto ret = MsptiAdapter::GetInstance()->UnregisterCommunicationCallback();
+    return Py_BuildValue("i", ret);
+}
+
+PyMethodDef *GetCommunicationMethods()
+{
+    static PyMethodDef methodCommunication[] = {
+        {"registerCB", RegisterCB, METH_VARARGS, ""},
+        {"unregisterCB", UnregisterCB, METH_NOARGS, ""},
+        {nullptr, nullptr, METH_VARARGS, ""}
+    };
+    return methodCommunication;
+}
+} // Communication
 } // Adapter
 } // Mspti
 
@@ -238,6 +267,7 @@ PyMODINIT_FUNC PyInit_mspti_C()
     AddSubModule(m, "mstx", Mspti::Adapter::Mstx::GetMstxMethods());
     AddSubModule(m, "kernel", Mspti::Adapter::Kernel::GetKernelMethods());
     AddSubModule(m, "hccl", Mspti::Adapter::Hccl::GetHcclMethods());
+    AddSubModule(m, "communication", Mspti::Adapter::Communication::GetCommunicationMethods());
     return m;
 }
 

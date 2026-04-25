@@ -51,7 +51,7 @@ msPTI 主要提供以下能力：
 | --- | --- | --- |
 | `Activity API` | 采集 API、Kernel、Memory、HCCL、Marker、External Correlation 等活动数据，用于构建 Tracing / Profiling 工具。 | [C API 参考](./docs/zh/c_api/README.md) |
 | `Callback API` | 订阅 Runtime / HCCL 回调，在 API 调用前后执行自定义逻辑或关联采集数据。 | [C API 参考](./docs/zh/c_api/README.md) |
-| `Python API` | 提供 `KernelMonitor`、`HcclMonitor`、`MstxMonitor` 等接口，快速接入 Python 场景分析能力。 | [Python API 参考](./docs/zh/python_api/README.md) |
+| `Python API` | 提供 `KernelMonitor`、`HcclMonitor`、`MstxMonitor`、`CommunicationMonitor` 等接口，快速接入 Python 场景分析能力。 | [Python API 参考](./docs/zh/python_api/README.md) |
 | `样例集` | 覆盖 callback、activity、correlation、HCCL、Python monitor 等典型场景，便于快速上手。 | [样例说明](./samples/README.md) / [用户指南](./docs/zh/getting_started/samples_guide.md) |
 
 ## 🛠️ 安装指南

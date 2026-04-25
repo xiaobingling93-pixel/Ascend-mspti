@@ -26,12 +26,12 @@ logging.basicConfig(level=logging.INFO,
                     format='\n%(asctime)s %(filename)s [line:%(lineno)d] [%(levelname)s] %(message)s')
 
 
-def check_time(res, monitor_hccl_kernel=False, monitor_marker=False):
+def check_time(res, monitor_communication_kernel=False, monitor_marker=False):
     """
     检查信息中end的时间大于start的时间
     """
     for msg in res:
-        if monitor_hccl_kernel:
+        if monitor_communication_kernel:
             time_list = re.findall(r"MsptiActivityKind.MSPTI_ACTIVITY_KIND_\S+, (\d{19}), (\d{19}),", msg)
         elif monitor_marker:
             time_list = re.findall(r"MsptiActivitySourceKind.MSPTI_ACTIVITY_SOURCE_KIND_\S+, \d+, \S+, \S+, "
@@ -240,24 +240,25 @@ class PythonMonitorTest(test_base.TestProfiling):
     def checkResDir(self, scene=None):
         with open(self.slog_stdout, 'r', encoding='utf-8') as txtfile:
             content = txtfile.read()
-            pattern_kernel_aivec = r"INFO: MsptiActivityKind.MSPTI_ACTIVITY_KIND_KERNEL, \d{19}, \d{19}, \d+, \d+, " \
-                                   r"\d+, KERNEL_AIVEC, \S+"
-            pattern_kernel_aicore = r"INFO: MsptiActivityKind.MSPTI_ACTIVITY_KIND_KERNEL, \d{19}, \d{19}, \d+, \d+, " \
-                                    r"\d+, KERNEL_AICORE, \S+"
-            pattern_hccl = r"INFO: MsptiActivityKind.MSPTI_ACTIVITY_KIND_HCCL, \d{19}, \d{19}, \d+, \d+, \d+\.\d+, " \
-                           r"HcclAllReduce, group_name_0"
+            pattern_kernel_aivec = \
+                r"INFO: MsptiActivityKind.MSPTI_ACTIVITY_KIND_KERNEL, \d{19}, \d{19}, \d+, \d+, \d+, KERNEL_AIVEC, \S+"
+            pattern_kernel_aicore = \
+                r"INFO: MsptiActivityKind.MSPTI_ACTIVITY_KIND_KERNEL, \d{19}, \d{19}, \d+, \d+, \d+, KERNEL_AICORE, \S+"
+            pattern_communication = \
+                r"INFO: MsptiActivityKind.MSPTI_ACTIVITY_KIND_COMMUNICATION, \d{19}, \d{19}, \d+, \d+, \S+, \d+, " \
+                r"hcom_allReduce_, group_name_0, \S+, \d+"
             kernel_aivec_msg = re.findall(pattern_kernel_aivec, content)
             kernel_aicore_msg = re.findall(pattern_kernel_aicore, content)
-            hccl_msg = re.findall(pattern_hccl, content)
+            communication_msg = re.findall(pattern_communication, content)
             kernel_aivec_count = len(kernel_aivec_msg)
             kernel_aicore_count = len(kernel_aicore_msg)
-            hccl_count = len(hccl_msg)
-            self.assertEqual(kernel_aivec_count, 8, f"aivec数据异常，数量为{kernel_aivec_count}")
-            self.assertEqual(kernel_aicore_count, 8, f"aicore数据异常，数量为{kernel_aicore_count}")
-            self.assertEqual(hccl_count, 8, f"hccl数据异常，数量为{hccl_count}")
-            check_time(kernel_aivec_msg, monitor_hccl_kernel=True)
-            check_time(kernel_aicore_msg, monitor_hccl_kernel=True)
-            check_time(hccl_msg, monitor_hccl_kernel=True)
+            communication_count = len(communication_msg)
+            self.assertEqual(kernel_aivec_count, 8, f"aivec数据异常,数量为{kernel_aivec_count}")
+            self.assertEqual(kernel_aicore_count, 8, f"aicore数据异常,数量为{kernel_aicore_count}")
+            self.assertEqual(communication_count, 8, f"communication数据异常,数量为{communication_count}")
+            check_time(kernel_aivec_msg, monitor_communication_kernel=True)
+            check_time(kernel_aicore_msg, monitor_communication_kernel=True)
+            check_time(communication_msg, monitor_communication_kernel=True)
 
 class PythonMstxMonitorTest(test_base.TestProfiling):
     def getTestCmd(self, scene=None):

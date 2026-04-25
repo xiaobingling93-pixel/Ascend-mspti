@@ -97,7 +97,7 @@ cd mspti
 | 路径 | 说明 |
 | --- | --- |
 | `mspti/csrc` | Python 扩展绑定 |
-| `mspti/monitor` | `KernelMonitor`、`HcclMonitor`、`MstxMonitor` 等 |
+| `mspti/monitor` | `KernelMonitor`、`HcclMonitor`、`MstxMonitor`、`CommunicationMonitor` 等 |
 | `mspti/activity_data.py` | Activity 数据封装 |
 | `mspti/constant.py` | 常量定义 |
 | `mspti/utils.py` | 通用工具函数 |

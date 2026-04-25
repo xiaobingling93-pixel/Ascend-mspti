@@ -43,3 +43,7 @@ _kernel_unregister_cb = mspti_C_kernel_module.unregisterCB
 mspti_C_hccl_module = importlib.import_module("mspti_C.hccl")
 _hccl_register_cb = mspti_C_hccl_module.registerCB
 _hccl_unregister_cb = mspti_C_hccl_module.unregisterCB
+
+mspti_C_communication_module = importlib.import_module("mspti_C.communication")
+_communication_register_cb = mspti_C_communication_module.registerCB
+_communication_unregister_cb = mspti_C_communication_module.unregisterCB

@@ -35,6 +35,7 @@ protected:
         file << "def kernel_data_callback(data): print(data)" << std::endl;
         file << "def marker_data_callback(data): print(data)" << std::endl;
         file << "def hccl_data_callback(data): print(data)" << std::endl;
+        file << "def communication_data_callback(data): print(data)" << std::endl;
         file.close();
         Py_Initialize();
     }
@@ -234,6 +235,57 @@ TEST_F(MsptiAdapterUtest, PythonHcclCallbackWillRunSuccess)
     EXPECT_EQ(MSPTI_SUCCESS, MsptiAdapter::GetInstance()->Stop());
     EXPECT_EQ(MSPTI_SUCCESS, MsptiAdapter::GetInstance()->FlushAll());
     EXPECT_EQ(MSPTI_SUCCESS, MsptiAdapter::GetInstance()->UnregisterHcclCallback());
+}
+
+TEST_F(MsptiAdapterUtest, RegisterCommunicationCallbackWillSuccess)
+{
+    PyObject *communicationCallback = GetMsptiPyCallback("communication_data_callback");
+    EXPECT_EQ(MSPTI_SUCCESS, MsptiAdapter::GetInstance()->RegisterCommunicationCallback(communicationCallback));
+    EXPECT_EQ(communicationCallback, MsptiAdapter::GetInstance()->GetCommunicationCallback());
+    EXPECT_EQ(MSPTI_SUCCESS, MsptiAdapter::GetInstance()->UnregisterCommunicationCallback());
+}
+
+TEST_F(MsptiAdapterUtest, PythonCommunicationCallbackWillRunSuccess)
+{
+    MOCKER_CPP(&Mspti::Ascend::DevTaskManager::StartDevProfTask)
+        .stubs()
+        .will(returnValue(MSPTI_SUCCESS));
+    MOCKER_CPP(&Mspti::Ascend::DevTaskManager::StopDevProfTask)
+        .stubs()
+        .will(returnValue(MSPTI_SUCCESS));
+
+    EXPECT_EQ(MSPTI_SUCCESS, MsptiAdapter::GetInstance()->SetBufferSize(BUFFER_SIZE));
+    EXPECT_EQ(MSPTI_SUCCESS, MsptiAdapter::GetInstance()->Start());
+    EXPECT_EQ(MSPTI_SUCCESS, msptiActivityEnable(MSPTI_ACTIVITY_KIND_COMMUNICATION));
+    PyObject *communicationCallback = GetMsptiPyCallback("communication_data_callback");
+    EXPECT_EQ(MSPTI_SUCCESS, MsptiAdapter::GetInstance()->RegisterCommunicationCallback(communicationCallback));
+    auto instance = Mspti::Activity::ActivityManager::GetInstance();
+    EXPECT_EQ(MSPTI_SUCCESS, instance->SetDevice(0));
+    EXPECT_EQ(MSPTI_SUCCESS, instance->ResetAllDevice());
+
+    constexpr uint64_t start = 1776859207688700;
+    constexpr uint64_t end = 1776859207688710;
+    msptiActivityCommunication communication;
+    communication.kind = MSPTI_ACTIVITY_KIND_COMMUNICATION;
+    communication.start = start;
+    communication.end = end;
+    communication.ds.deviceId = 0;
+    communication.ds.streamId = 0;
+    communication.name = "Communication";
+    communication.commName = "group_name";
+    communication.algType = "MESH-RING";
+    communication.correlationId = 42;
+    communication.count = 100;
+    communication.dataType = msptiCommunicationDataType::MSPTI_ACTIVITY_COMMUNICATION_FP32;
+    instance->Record(reinterpret_cast<msptiActivity*>(&communication), sizeof(communication));
+
+    // invalid kind
+    communication.kind = MSPTI_ACTIVITY_KIND_INVALID;
+    instance->Record(reinterpret_cast<msptiActivity*>(&communication), sizeof(communication));
+
+    EXPECT_EQ(MSPTI_SUCCESS, MsptiAdapter::GetInstance()->Stop());
+    EXPECT_EQ(MSPTI_SUCCESS, MsptiAdapter::GetInstance()->FlushAll());
+    EXPECT_EQ(MSPTI_SUCCESS, MsptiAdapter::GetInstance()->UnregisterCommunicationCallback());
 }
 
 TEST_F(MsptiAdapterUtest, ConsumeFailedWhenNotRegisterCallback)

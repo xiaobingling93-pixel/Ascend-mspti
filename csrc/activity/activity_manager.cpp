@@ -32,7 +32,7 @@ namespace Mspti {
 namespace Activity {
 
 namespace {
-    
+
 msptiResult IsNeedLdPreload(msptiActivityKind kind)
 {
     // Some activity kinds depend on LD_PRELOAD hooking (libmspti.so). If those
@@ -67,6 +67,7 @@ void ActivityBuffer::Init(msptiBuffersCallbackRequestFunc func)
     if (buf_size_ < MIN_ACTIVITY_BUFFER_SIZE) {
         MSPTI_LOGW("Please malloc the Activity Buffer more than 2MB. Current is %lu Bytes.", buf_size_);
     }
+    MSPTI_LOGI("ActivityBuffer init, bufSize: %zu, recordsNum: %zu", buf_size_, records_num_);
 }
 
 void ActivityBuffer::UnInit(msptiBuffersCallbackCompleteFunc func)

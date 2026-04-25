@@ -54,7 +54,7 @@ MstxDomainMgr* MstxDomainMgr::GetInstance()
         }
         Mspti::Common::MsptiMakeSharedPtr(domainHandlePtr->name, g_defaultDomainName);
         if (domainHandlePtr->name == nullptr) {
-            MSPTI_LOGE("Failed to malloc memory for domain %s, Init DomainMgr Fail", g_defaultDomainName);
+            MSPTI_LOGE("Failed to malloc memory for domain %s, Init DomainMgr Fail", g_defaultDomainName.c_str());
             return;
         }
         defaultDomainHandle_t = domainHandlePtr->handle.get();
@@ -71,7 +71,7 @@ mstxDomainHandle_t MstxDomainMgr::CreateDomainHandle(const char *name)
     }
     std::lock_guard<std::mutex> lk(domainMutex_);
     if (domainHandleMap_.size() > MARK_MAX_CACHE_NUM) {
-        MSPTI_LOGE("Cache domain name failed, current size: %u, limit size: %u",
+        MSPTI_LOGE("Cache domain name failed, current size: %zu, limit size: %u",
             domainHandleMap_.size(), MARK_MAX_CACHE_NUM);
         return nullptr;
     }
@@ -206,7 +206,7 @@ void MstxMarkAFunc(const char* msg, AclrtStream stream)
         MSPTI_LOGE("Report Mark data failed.");
     }
 }
- 
+
 uint64_t MstxRangeStartAFunc(const char* msg, AclrtStream stream)
 {
     if (!ActivityManager::GetInstance()->IsActivityKindEnable(MSPTI_ACTIVITY_KIND_MARKER)) {
@@ -226,7 +226,7 @@ uint64_t MstxRangeStartAFunc(const char* msg, AclrtStream stream)
     }
     return markId;
 }
- 
+
 void MstxRangeEndFunc(uint64_t rangeId)
 {
     if (!ActivityManager::GetInstance()->IsActivityKindEnable(MSPTI_ACTIVITY_KIND_MARKER)) {

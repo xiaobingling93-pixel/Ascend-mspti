@@ -19,7 +19,8 @@
 from .constant import (
     MsptiActivityKind,
     MsptiActivityFlag,
-    MsptiActivitySourceKind
+    MsptiActivitySourceKind,
+    MsptiCommunicationDataType
 )
 
 
@@ -143,3 +144,41 @@ class HcclData:
         self.name: str = origin_data.get(self.NAME, "")
         # commName
         self.comm_name: str = origin_data.get(self.COMMNAME, "")
+
+
+class CommunicationData:
+    KIND = "kind"
+    DATA_TYPE = "dataType"
+    COUNT = "count"
+    DEVICE_ID = "deviceId"
+    STREAM_ID = "streamId"
+    START = "start"
+    END = "end"
+    ALG_TYPE = "algType"
+    NAME = "name"
+    COMMNAME = "commName"
+    CORRELATION_ID = "correlationId"
+
+    def __init__(self, origin_data: dict):
+        # Activity record kind, must be MSPTI_ACTIVITY_COMMUNICATION_KIND
+        self.kind: MsptiActivityKind = MsptiActivityKind(origin_data.get(self.KIND, 0))
+        # Communication data type, Works with msptiCommunicationDataType
+        self.data_type: MsptiCommunicationDataType = MsptiCommunicationDataType(origin_data.get(self.DATA_TYPE, 0))
+        # Count of communication data
+        self.count: int = origin_data.get(self.COUNT, 0)
+        # Device ID
+        self.device_id: int = origin_data.get(self.DEVICE_ID, 0)
+        # Stream ID
+        self.stream_id: int = origin_data.get(self.STREAM_ID, 0)
+        # Start timestamp for the communication, in ns
+        self.start: int = origin_data.get(self.START, 0)
+        # End timestamp for the communication, in ns
+        self.end: int = origin_data.get(self.END, 0)
+        # The type of algorithm used for communication
+        self.alg_type: str = origin_data.get(self.ALG_TYPE, "")
+        # The communication op name.
+        self.name: str = origin_data.get(self.NAME, "")
+        # The name of communication group where the communication operator is executed
+        self.comm_name: str = origin_data.get(self.COMMNAME, "")
+        # The correlation ID of the communication op.
+        self.correlation_id: int = origin_data.get(self.CORRELATION_ID, 0)

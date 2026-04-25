@@ -27,7 +27,7 @@ bash sample_run.sh
 | [mspti_external_correlation](./mspti_external_correlation) | Activity API | 跨层调用链路关联分析 | 演示外部关联 ID 的压栈与出栈机制，用于串联不同层级的调用关系。 |
 | [mspti_hccl_activity](./mspti_hccl_activity) | Activity API | HCCL 通信行为采集与分析 | 演示开启 HCCL 相关活动采集并获取通信算子数据。 |
 | [mspti_mstx_activity_domain](./mspti_mstx_activity_domain) | Activity API + MSTX | 域级打点采集控制 | 演示按 `mstxDomain` 动态启停打点采集，以控制采集范围和性能开销。 |
-| [python_monitor](./python_monitor) | Python API | Python 场景下的计算与通信耗时采集 | 演示使用 `KernelMonitor` 和 `HcclMonitor` 获取计算算子与通信算子的耗时数据。 |
+| [python_monitor](./python_monitor) | Python API | Python 场景下的计算与通信耗时采集 | 演示使用 `KernelMonitor` 和 `CommunicationMonitor` 获取计算算子与通信算子的耗时数据。 |
 | [python_mstx_monitor](./python_mstx_monitor) | Python API + MSTX | Python 场景下的自定义打点分析 | 演示使用 `MstxMonitor` 采集指定算子或代码段的打点耗时。 |
 
 ## 补充说明

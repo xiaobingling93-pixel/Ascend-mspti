@@ -6,7 +6,7 @@
 
 ## 产品支持情况
 
->![](../figures/icon-note.gif) **说明：** 
+>![](../figures/icon-note.gif) **说明：**
 >昇腾产品的具体型号，请参见《[昇腾产品形态说明](https://www.hiascend.com/document/detail/zh/AscendFAQ/ProduTech/productform/hardwaredesc_0001.html)》。
 
 | 产品类型 | 是否支持 |
@@ -85,5 +85,5 @@ msPTI工具不可与任何其他性能数据采集工具同时使用，否则会
 
   | 样例                                                     | 说明                                                         |
   | -------------------------------------------------------- | ------------------------------------------------------------ |
-  | [python_monitor](../../../samples/python_monitor)           | 1.展示Monitor基本使用方式，通过KernelMonitor、HcclMonitor获取计算算子和通信算子的耗时。 |
+  | [python_monitor](../../../samples/python_monitor)           | 1.展示Monitor基本使用方式，通过KernelMonitor、CommunicationMonitor获取计算算子和通信算子的耗时。 |
   | [python_mstx_monitor](../../../samples/python_mstx_monitor) | 1. 展示MstxMonitor基本使用方式，用户可以通过Mstx打点采集对应算子（如matmul）耗时。 |

@@ -63,6 +63,11 @@ public:
     msptiResult UnregisterHcclCallback();
     PyObject* GetHcclCallback() const;
 
+    // Communication
+    msptiResult RegisterCommunicationCallback(PyObject *communicationCallback);
+    msptiResult UnregisterCommunicationCallback();
+    PyObject* GetCommunicationCallback() const;
+
 public:
     // buffer
     size_t bufferSize{DEFAULT_BUFFER_SIZE};
@@ -84,6 +89,8 @@ private:
     PyObject *mstxCallback_{nullptr};
     // hccl callback
     PyObject *hcclCallback_{nullptr};
+    // communication callback
+    PyObject *communicationCallback_{nullptr};
 };
 } // Adapter
 } // Mspti

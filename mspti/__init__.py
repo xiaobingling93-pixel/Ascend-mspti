@@ -24,15 +24,18 @@ __all__ = [
     "KernelMonitor", "KernelData",
     "MstxMonitor", "MarkerData", "RangeMarkerData",
     "HcclMonitor", "HcclData",
-    "MsptiObjectId", "MsptiResult", "MsptiActivityKind", "MsptiActivityFlag", "MsptiActivitySourceKind"
+    "CommunicationMonitor", "CommunicationData",
+    "MsptiObjectId", "MsptiResult", "MsptiActivityKind", "MsptiCommunicationDataType",
+    "MsptiActivityFlag", "MsptiActivitySourceKind"
 ]
 
 from .monitor.kernel_monitor import KernelMonitor
 from .monitor.mstx_monitor import MstxMonitor
 from .monitor.hccl_monitor import HcclMonitor
+from .monitor.communication_monitor import CommunicationMonitor
 from .constant import (
-    MsptiResult, MsptiActivityKind, MsptiActivityFlag, MsptiActivitySourceKind
+    MsptiResult, MsptiActivityKind, MsptiActivityFlag, MsptiActivitySourceKind, MsptiCommunicationDataType
 )
 from .activity_data import (
-    KernelData, MarkerData, RangeMarkerData, HcclData, MsptiObjectId
+    KernelData, MarkerData, RangeMarkerData, HcclData, MsptiObjectId, CommunicationData
 )

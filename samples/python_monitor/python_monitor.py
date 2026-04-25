@@ -28,8 +28,8 @@ import torch_npu
 from mspti import (
     KernelData,
     KernelMonitor,
-    HcclData,
-    HcclMonitor
+    CommunicationData,
+    CommunicationMonitor
 )
 
 # parser会被多线程调用，所以使用queue存储数据，保证多线程安全
@@ -42,7 +42,7 @@ def kernel_parser(data: KernelData):
     data_queue.put(data)
 
 
-def hccl_parser(data: HcclData):
+def communication_parser(data: CommunicationData):
     data_queue.put(data)
 
 
@@ -55,9 +55,10 @@ def consumer_func(consume_queue):
             if isinstance(data, KernelData):
                 logging.info(f'{data.kind}, {data.start}, {data.end}, {data.device_id}, {data.stream_id}, '
                              f'{data.correlation_id}, {data.type}, {data.name}')
-            elif isinstance(data, HcclData):
+            elif isinstance(data, CommunicationData):
                 logging.info(f'{data.kind}, {data.start}, {data.end}, {data.device_id}, {data.stream_id}, '
-                             f'{data.bandwidth}, {data.name}, {data.comm_name}')
+                             f'{data.data_type}, {data.count}, {data.name}, {data.comm_name}, '
+                             f'{data.alg_type}, {data.correlation_id}')
         else:
             time.sleep(0.1)
 
@@ -71,10 +72,10 @@ def test_monitor():
     consumer.start()
 
     # enable mspti monitor to collect activity
-    k_monitor = KernelMonitor()
-    k_monitor.start(kernel_parser)
-    h_monitor = HcclMonitor()
-    h_monitor.start(hccl_parser)
+    kernel_monitor = KernelMonitor()
+    kernel_monitor.start(kernel_parser)
+    communication_monitor = CommunicationMonitor()
+    communication_monitor.start(communication_parser)
 
     init_process()
     device = int(os.getenv('LOCAL_RANK'))
@@ -91,8 +92,8 @@ def test_monitor():
     torch.npu.synchronize()
 
     # stop mspti monitor and consume activity
-    k_monitor.stop()
-    h_monitor.stop()
+    kernel_monitor.stop()
+    communication_monitor.stop()
     data_queue.put(None)
     consumer.join()
 
